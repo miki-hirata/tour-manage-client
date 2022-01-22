@@ -1,0 +1,225 @@
+@charset "utf-8";
+@use "setting" as s;
+@include s.reset;
+
+////基本レイアウト
+/* header {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  background-color: s.$baseColor;
+  border-bottom: solid 4px #333;
+  .header_area {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+} */ /* 
+
+.main_title {
+  span {
+    font-size: 26px;
+    font-weight: bold;
+    line-height: 0.9;
+    color: #fff;
+    @include s.mediaTabW {
+      font-size: 20px;
+    }
+  }
+}
+
+.section_title {
+  margin-top: 1em;
+  padding-bottom: 1em;
+  span {
+    font-size: 24px;
+    font-weight: bold;
+  }
+}
+
+.sub_title {
+  span {
+    font-size: 18px;
+    font-weight: bold;
+    color: #797979;
+  }
+}
+
+.select_box {
+  select {
+    cursor: pointer;
+    background-color: #fff;
+    padding: 0.5em 1em;
+  }
+}
+.navi_area {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background-color: s.$baseColor;
+  color: #fff;
+  padding: 1em 1em 0;
+  z-index: 2;
+  .navi_list {
+    margin-top: 2em;
+    li {
+      padding-bottom: 1em;
+    }
+  }
+} */
+/* 
+@mixin navi_styling($navi-width) {
+  .navi_area {
+    width: $navi-width;
+  }
+  .main_area {
+    margin-left: $navi-width;
+  }
+}
+@include navi_styling($navi-width: 200px); */
+/* 
+@mixin header_styling($header-height) {
+  header {
+    height: $header-height;
+  }
+  .wrapper {
+    padding-top: $header-height;
+  }
+  .navi_area {
+    top: $header-height;
+  }
+}
+@include header_styling($header-height: 50px); */
+
+////基本レイアウト　メディアクエリ
+/* @include s.mediaTabW {
+  @include navi_styling($navi-width: 150px);
+}
+
+@include s.mediaTabH {
+  //@include header_styling($header-height: 40px);
+  .navi_area {
+    width: 100%;
+    left: 0;
+    top: 68%;
+  }
+  .main_area {
+    margin-left: 0;
+  }
+}
+
+.main_width {
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+
+  @include s.mediaTabW {
+    margin-left: 30px;
+    margin-right: 30px;
+  }
+  @include s.mediaSP {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+}
+ */
+//押せることが分かるように影をつける
+.link {
+  box-shadow: 1px 1px s.$gray;
+}
+
+.card {
+  border: 2px solid s.$gray;
+  border-radius: 10px;
+  display: block;
+  padding: 0.5em 1em;
+  background-color: #fff;
+  + .card {
+    margin-top: 0.75em;
+  }
+
+  //カード内flexクラスのデザイン統一
+  &.flex,
+  .flex {
+    display: flex;
+    > div {
+      &:first-child {
+        width: 80px;
+        border-right: 2px solid s.$gray;
+        text-align: center;
+        margin-right: 10px;
+        margin-left: -1em;
+        @include s.mediaSP {
+          width: 70px;
+        }
+      }
+      &:nth-child(n + 2) {
+        flex: 1;
+      }
+    }
+  }
+
+  .head_main {
+    .name_small {
+      line-height: 1.6;
+    }
+    .name_large {
+      font-size: 20px;
+      font-weight: bold;
+    }
+  }
+} //card
+/* 
+textarea {
+  width: 100%;
+}
+
+.place_event {
+  margin-top: 2em;
+}
+
+.bread_area {
+  margin: 1em 0;
+  ul {
+    display: flex;
+    li {
+      padding-right: 2em;
+      position: relative;
+      font-size: 14px;
+      @include s.mediaSP {
+        font-size: 12px;
+      }
+      &::after {
+        content: "";
+        position: absolute;
+        right: 1em;
+        top: 50%;
+        transform: translate(50%, -50%);
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 3px 0 3px 6px;
+        border-color: transparent transparent transparent gray;
+      }
+      &:last-child {
+        &::after {
+          display: none;
+        }
+      }
+    }
+  }
+} //bread_area
+
+.page_area {
+  margin-top: 1em;
+  display: flex;
+  justify-content: space-between;
+} //page_area
+
+.search_area {
+  padding-bottom: 1em;
+}
+ */

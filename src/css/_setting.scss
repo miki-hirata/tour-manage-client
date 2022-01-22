@@ -1,0 +1,119 @@
+@charset "utf-8";
+
+//メディアクエリー
+$width-PConly: 1025px; //TabW+1px
+$width-TabW: 1024px; //タブレット横
+$width-TabH: 768px; //タブレット縦
+$width-SP: 480px; //スマートフォン
+
+@mixin media1500 {
+  @media only screen and (max-width: 1500px) {
+    @content;
+  }
+}
+@mixin media1300 {
+  @media only screen and (max-width: 1300px) {
+    @content;
+  }
+}
+
+@mixin mediaPConly {
+  @media only screen and (min-width: $width-PConly) {
+    @content;
+  }
+}
+
+@mixin mediaTabW {
+  @media only screen and (max-width: $width-TabW) {
+    @content;
+  }
+}
+
+@mixin mediaTabH {
+  @media only screen and (max-width: $width-TabH) {
+    @content;
+  }
+}
+
+@mixin mediaSP {
+  @media only screen and (max-width: $width-SP) {
+    @content;
+  }
+}
+
+//変数設定
+$baseColor: #004363; //濃い色
+$subColor: #3998c4; //薄い色
+$gray: #d6d6d6;
+$fontNoto: "Noto Sans JP", sans-serif;
+$fontYuGothic: "游ゴシック体", YuGothic, "游ゴシック", "Yu Gothic", "メイリオ",
+  sans-serif;
+$fontImFell: "IM Fell English", serif;
+
+@mixin reset {
+  *:where(:not(iframe, canvas, img, svg, video):not(svg *)) {
+    all: unset;
+    display: revert;
+  }
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+  body,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    margin: 0px;
+    padding: 0px;
+    font-weight: normal;
+  }
+  body {
+    color: #333;
+    background-color: #fffff6;
+    font-family: $fontYuGothic;
+    line-height: 1.3;
+    font-size: 16px;
+    @include mediaSP {
+      font-size: 15px;
+    }
+  }
+  ol,
+  ul {
+    list-style: none;
+  }
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  table {
+    border-collapse: collapse;
+  }
+  a {
+    cursor: pointer;
+  }
+
+  /* input[type="text"],
+  input[type="tel"],
+  input[type="email"],
+  input[type="esubmit"],
+  button,
+  select,
+  textarea {
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    outline: none;
+    background: none;
+  } */
+}
+
+@mixin animate {
+  -webkit-transition: 0.5s;
+  -moz-transition: 0.5s;
+  -o-transition: 0.5s;
+  -ms-transition: 0.5s;
+  transition: 0.5s;
+}
