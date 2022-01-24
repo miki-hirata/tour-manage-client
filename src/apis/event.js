@@ -10,6 +10,9 @@ export async function getEvent(eventId) {
   return request(`/events?id=${eventId}`);
 }
 
+export async function getEventSches(eventId) {
+  return request(`/events/sches?id=${eventId}`);
+}
 
 //POSTリクエストをまとめる　typeに文字列で挿入する
 //リダイレクト処理が上手くいっていない

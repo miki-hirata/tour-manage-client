@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { Breadcrumb, Loading, EventDetail} from "../../components";
-import { getEvent } from "../../apis";
+import { MainArea, Loading, EventDetail} from "../../components";
+import { getEvent, getEventSches } from "../../apis";
 
 
 export function EventDetailPage({ setHdTitle }) {
   
   const [event, setEvent] = useState(null);
+  const [sches, setSches] = useState(null);
   const params = useParams();
   const location = useLocation();
   const query = new URLSearchParams(location.search);
@@ -14,6 +15,9 @@ export function EventDetailPage({ setHdTitle }) {
   const page = +query.get("page") || 1;
 
   useEffect(() => {
+    getEventSches(params.eventId).then((data) =>{ 
+      setSches(data);
+    });
     getEvent(params.eventId).then((data) => {
       setEvent(data);
       setHdTitle(data.name);
@@ -22,15 +26,16 @@ export function EventDetailPage({ setHdTitle }) {
 
   return (
     <>
-      <div className="event_section">
-        {event == null ? (
-          <Loading />
-        ) : (
+      {event == null ? (
+        <Loading />
+      ) : (
+        <MainArea>
           <EventDetail
-            event={event}
+            event = {event}
+            sches = {sches}
           />
-        )}
-      </div>
+        </MainArea>
+      )}
     </>
   );
 }

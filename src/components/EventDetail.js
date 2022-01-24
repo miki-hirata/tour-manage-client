@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { FormatDate, FormatUpdate } from "../components";
-import { handleDeleteEvent, handleEditEvent } from "../apis";
-
+import { useEffect, useState } from "react";
+import { useLocation, useParams, Link } from "react-router-dom";
+import { handleDeleteEvent, handleEditEvent, getEventSches } from "../apis";
+import { FormatDate, FormatUpdate, StyledCard, CardInnerHead, CardInner, HeadMainFont, HeadSubFont } from "./index";
+import styled from "styled-components";
 
 
 function EventDeleteButton({ event }) {
@@ -16,7 +16,7 @@ function EventDeleteButton({ event }) {
   );
 }
 
-export function EventDetail({ event }) {
+export function EventDetail({ event, sches }) {
   //編集モードかどうかによる出し分け(独立コンポーネントにするとエラー)
   const [edit, setEdit] = useState(false);
   const toggleEdit = () => setEdit(!edit);
@@ -29,30 +29,69 @@ export function EventDetail({ event }) {
   }
   let defaultDate = new Date(event.date);//日付を何とかしてデフォルトセットしたい
 
+
   return (
-    <>
+    <div key={event.id}>
       <form onSubmit={handleEditEvent}> 
-        <div className="card flex">
+      
+      <StyledCard
+        variant="outlined"
+      >
+        <CardInnerHead>
           <FormatDate date={event.date} />
           {edit && <input type="date" name="date" defaultValue={defaultDate} disabled={!edit}/>}
-          <div className="head_main">
-            <input type="text" name="name" defaultValue={event.name} className="name_small" disabled={!edit}/>
+          
+          <HeadMainArea>
+            <HeadSubFont>
+              <input type="text" name="name" defaultValue={event.name} disabled={!edit}/>
+            </HeadSubFont>
             {event.Place &&
               <Link
                 key={event.id}
                 to={`/places/${event.Place.id}`}
               >
-              <p className="name_large"><span>{event.Place.name}</span></p></Link>}
+                <HeadMainFont>{event.Place.name}</HeadMainFont>
+              </Link>
+            }
             {edit && <><label htmlFor="PlaceId">会場ID:</label><input type="number" name="PlaceId" defaultValue={event.PlaceId} placeholder="会場ID" /></>}
-          </div>
-        </div>
+          </HeadMainArea>
+        </CardInnerHead>
+      </StyledCard>
+      <StyledCard
+        variant="outlined"
+        >
+        {event.EventSches.length >= 1 && 
+          <CardInner>
+            {sches.map((sche) => {
+              return (
+                <dl key={sche.id} >
+                  <dt>{sche.time}</dt>
+                  <dd>{sche.name}{sche.memo}</dd>
+                </dl>
+              );
+            })}
+          </CardInner>
+        }
+        <CardInner>
+          <dl>
+            <dt>ID</dt>
+            <dd>{event.id}</dd>
+          </dl>
+          <dl>
+            <dt>カテゴリー</dt>
+            <dd>{event.EventCat.name}</dd>
+          </dl>
+          <dl>
+            <dt>メモ</dt>
+            <dd>{event.memo}</dd>
+          </dl>
+        </CardInner>
+      </StyledCard>
+
         <div className="card">
           <div className="num">
             <span>ID</span>
             <span>{event.id}</span>
-          </div>
-          <div className="memo">
-            <textarea type="text" name="memo" defaultValue={event.memo} disabled={!edit}/>
           </div>
         </div>
         {/* <SelectPlace /> */}
@@ -61,6 +100,12 @@ export function EventDetail({ event }) {
       </form>
       <FormatUpdate updateAt={event.updatedAt}/>
       <EventDeleteButton event={event}/>
-    </>
+    </div>
   );
 }
+
+
+const HeadMainArea = styled.div`
+  margin-left: 40px;
+`;
+

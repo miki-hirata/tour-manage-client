@@ -35,8 +35,8 @@ export const mixinColor = css`
 
 export const mixinMaxWidth = css`
   ${pc`
-      padding-left: 240px;
-      padding-right: 40px;
+      padding-left: 290px;
+      padding-right: 100px;
   `}
   ${tab`
       padding: 0 30px;

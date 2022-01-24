@@ -1,15 +1,18 @@
 import { Link } from "react-router-dom";
+import { FormatDate, StyledCard, CardInnerHead, HeadMainFont, HeadSubFont } from "./index";
 
 export function PlaceList({ place }) {
   return (    
-    <Link
-      key={place.id}
-      className="card link"
-      to={`/places/${place.id}`}
-    >
-      <div className="head_main">
-          <p className="name_large"><span>{place.name}</span></p>
-      </div>
-    </Link>
+    <StyledCard>
+      <Link
+        key={place.id}
+        className="card link"
+        to={`/places/${place.id}`}
+      >
+        <CardInnerHead>
+          <HeadMainFont>{place.name}</HeadMainFont>
+        </CardInnerHead>
+      </Link>
+    </StyledCard>
   );
 }

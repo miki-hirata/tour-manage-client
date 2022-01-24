@@ -1,42 +1,40 @@
 import { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
-import { Loading, TourList } from "../components";
-import { getTours } from "../apis";
+import { Breadcrumb, Loading, MainArea, SearchPlace } from "../../components";
+import { getPlaces } from "../../apis";
 
-export function TourListPage({ setHdTitle }) {
-  const [tours, setTours] = useState(null);
+export function PlaceListPage({ setHdTitle }) {
+  const [places, setPlaces] = useState(null);
 
   const location = useLocation();
   const query = new URLSearchParams(location.search);
   const perPage = 5;
   const page = +query.get("page") || 1;
 
-  setHdTitle('ツアー一覧')
-
+  
+  
   useEffect(() => {
-    getTours({
+    getPlaces({
       limit: perPage,
       offset: (page - 1) * perPage,
     }).then((data) => {
-      setTours(data);
-      console.log(data);
+      setPlaces(data);
+      setHdTitle('会場一覧')
     });
   }, [page]); 
 
 
   return (
     <>
-      {tours == null ? (
+      {places == null ? (
         <Loading />
       ) : (
-        <>
-        {tours.map((tour) => {
-          return <TourList key={tour.id} tour={tour} />;
-        })}
-        </>
+        <MainArea>
+          <SearchPlace 
+            places={places}
+          />
+        </MainArea>
       )}
-      
     </>
   );
 }
-

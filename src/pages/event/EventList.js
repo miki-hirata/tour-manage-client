@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useLocation, Link } from "react-router-dom";
-import { Header, Loading, EventList } from "../../components";
+import { useLocation } from "react-router-dom";
+import { MainArea, Loading, EventList } from "../../components";
 import { getEvents } from "../../apis";
 
 
@@ -11,30 +11,28 @@ export function EventListPage({ setHdTitle }) {
   const perPage = 5;
   const page = +query.get("page") || 1;
 
-  setHdTitle('イベント一覧')
+  
   useEffect(() => {
     getEvents({
       limit: perPage,
       offset: (page - 1) * perPage,
     }).then((data) => {
       setEvents(data);
+      setHdTitle('イベント一覧')
     });
   }, [page]);
 
   return (
     <>
-      {/* <Header /> */}
-      <main>
-        {events == null ? (
-          <Loading />
-        ) : (
-          <section className="event_section">
-            {events.map((event) => {
-              return <EventList key={event.id} event={event} />;
-            })}
-          </section>
-        )}
-      </main>
+    {events == null ? (
+      <Loading />
+    ) : (
+      <MainArea>
+        {events.map((event) => {
+          return <EventList key={event.id} event={event} />;
+        })}
+      </MainArea>
+    )}
     </>
   );
 }

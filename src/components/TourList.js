@@ -1,15 +1,17 @@
 import { Link } from "react-router-dom";
+import { StyledCard, CardInnerHead, HeadMainFont, HeadSubFont } from "./index";
 
 export function TourList({ tour }) {
   return (    
-    <Link
-      key={tour.id}
-      className="card link"
-      to={`/tours/${tour.id}`}
-    >
-      <div className="head_main">
-          <p className="name_large"><span>{tour.name}</span></p>
-      </div>
-    </Link>
+    <StyledCard>
+      <Link
+        key={tour.id}
+        to={`/tours/${tour.id}`}
+      >      
+        <CardInnerHead>
+          <HeadMainFont>{tour.name}</HeadMainFont>
+        </CardInnerHead>
+      </Link>
+    </StyledCard>
   );
 }

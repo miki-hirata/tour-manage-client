@@ -1,9 +1,16 @@
-import { Breadcrumb } from "../components";
-import { handleAddPlace } from "../apis";
+import { useEffect } from "react";
+import { Breadcrumb } from "../../components";
+import { handleAddPlace } from "../../apis";
 
 
 export function PlaceAddPage({ setHdTitle }) {
-  setHdTitle('会場新規登録')
+  
+
+  
+  useEffect(() => {
+    setHdTitle('会場新規登録')
+  }, []);
+
   return (
     <>
     

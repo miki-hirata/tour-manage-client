@@ -1,7 +1,10 @@
+import { useEffect } from "react";
 import { handleAddEvent } from "../../apis";
 
 export function EventAddPage({ setHdTitle }) {
-  setHdTitle('イベント新規登録')
+  useEffect(() => {
+    setHdTitle('イベント新規登録')
+  }, []);
   return (
     <>
       <form onSubmit={handleAddEvent} className="card">

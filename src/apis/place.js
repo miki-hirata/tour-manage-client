@@ -9,12 +9,12 @@ export async function getPlace(placeId) {
   return request(`/places?id=${placeId}`);
 }
 
-export async function getPlaceEvents(tourId) {
-  return request(`/places/events?id=${tourId}`);
+export async function getPlaceEvents(placeId) {
+  return request(`/places/events?id=${placeId}`);
 }
 
-export async function getPlaceMemos(tourId) {
-  return request(`/places/memos?id=${tourId}`);
+export async function getPlaceMemos(placeId) {
+  return request(`/places/memos?id=${placeId}`);
 }
 
 //POSTリクエストをまとめる　typeに文字列で挿入する

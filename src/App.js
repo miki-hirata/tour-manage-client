@@ -2,18 +2,89 @@ import { useState } from "react";
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 import { RootPage } from "./pages/Root.js";
 import { EventListPage, EventDetailPage, EventAddPage } from "./pages/event";
+import { PlaceListPage, PlaceDetailPage, PlaceAddPage } from "./pages/place";
+import { TourListPage, TourDetailPage, TourEventDetailPage } from "./pages/tour";
+/* 
 import { PlaceListPage } from "./pages/PlaceList.js";
 import { PlaceDetailPage } from "./pages/PlaceDetail.js";
-import { PlaceAddPage } from "./pages/PlaceAdd.js";
+import { PlaceAddPage } from "./pages/place/PlaceAdd.js";
 import { TourListPage } from "./pages/TourList.js";
-import { TourDetailPage } from "./pages/TourDetail.js";
-import { TourEventDetailPage } from "./pages/TourEventDetail.js";
-import { TestPage } from "./pages/TestPage.js";
-import "./css/style.min.css"
-import styled from "styled-components";
+import { TourDetailPage } from "./pages/tour/TourDetail.js";
+import { TourEventDetailPage } from "./pages/TourEventDetail.js"; */
+
 import { pc, sp, tab, onlyTab, onlyPC, mixinMaxWidth } from './setting';
 import MediaQuery from "react-responsive";
+import styled from "styled-components";
+import IconButton from '@mui/material/IconButton';
+import HomeIcon from '@mui/icons-material/Home';
+import MenuIcon from '@mui/icons-material/Menu';
 
+function Header({ title }) {
+  return (
+    <HeaderStyle>
+      <div className="header_area">
+        <div className="title">
+          <h1>{title}</h1>
+        </div>
+      </div>
+      <div className="header_margin"></div>
+    </HeaderStyle>
+  );
+}
+
+function Navi({ naviOpen, toggleNaviOpen }){
+  return(
+    <NaviStyle naviOpen={ naviOpen }>
+      <div className="navi_area">
+        <Link
+            className="main_title"
+            to={`/`}
+          ><h1><span>Tour Man</span></h1>
+        </Link>
+        <ul className="navi_list">        
+          <li><Link to={`/`}><span>ツアー</span></Link></li>
+          <li><Link to={`/events`}><span>イベント</span></Link></li>
+          <li><Link to={`/places`}><span>会場</span></Link></li>
+        </ul>
+        
+        <ul className="navi_list">
+          <li><Link to={`/events/add`}><span>イベント追加</span></Link></li>
+          <li><Link to={`/places/add`}><span>会場追加</span></Link></li>
+        </ul>  
+      </div>
+      {/* <button className="navi_bg" onClick={toggleNaviOpen}></button> */}
+    </NaviStyle>
+  );
+}
+
+
+function Footer({ toggleNaviOpen }){
+  return(
+  <FooterStyle>
+    <Link
+      className="home"
+      to={`/`}
+    >
+      <IconButton
+        size="large"
+        color="inherit"
+        aria-label="home"
+      >
+        <HomeIcon />
+      </IconButton>
+    </Link>
+    
+    <IconButton
+      size="large"
+      color="inherit"
+      aria-label="menu"
+      onClick={toggleNaviOpen}
+    >
+      <MenuIcon />
+    </IconButton>
+  </FooterStyle>
+  ); 
+}
 
 export default function App() {
   const [naviOpen, setNaviOpen] = useState(false);
@@ -21,14 +92,12 @@ export default function App() {
   const [hdTitle, setHdTitle] = useState('Tour Man');
 
   return (
-    <Router>
-      
-      <Header title={hdTitle}/>
-      <MainArea>
+    <Wrapper>
+      <Router>
+        <Navi naviOpen={naviOpen}/>
+        <Header title={hdTitle}/>
         <Switch>
           <Route path="/" exact>
-            {/* <TestPage /> */}
-            {/* <RootPage /> */}
             <TourListPage setHdTitle={setHdTitle} />
           </Route>
           {/* <Route path="/tours/add" exact>
@@ -57,45 +126,28 @@ export default function App() {
           </Route>
           <Route path="/places/:placeId" exact>
             <PlaceDetailPage setHdTitle={setHdTitle} />
-            {/* PlaceEvent */}
-            {/* PlaceMemo */}
           </Route>
         </Switch>
-      </MainArea>
-      
-      <Navi naviOpen={naviOpen}/>
-      <MediaQuery query={onlyTab}>
-        <Footer toggleNaviOpen={toggleNaviOpen}/>
-      </MediaQuery>
-    </Router>
+        <MediaQuery query={onlyTab}>
+          <Footer toggleNaviOpen={toggleNaviOpen}/>
+        </MediaQuery>
+      </Router>
+    </Wrapper>
   );
 }
 
-function Header({ title }) {
-  return (
-    <HeaderStyle>
-      <div className="header_area">
-        <div className="title">
-          <h1>{title}</h1>
-        </div>
-      </div>
-      <div className="header_margin"></div>
-    </HeaderStyle>
-  );
-}
 
 const HeaderStyle = styled.header`
-background-color: yellow;
-position: fixed;
+background-color: #fff;
+position: sticky;
 top: 0;
-left: 0;
 height: 40px;
 width: 100%;
 display: flex;
-align-items: center;
+align-items: flex-end;
 z-index: 1000;
 ${mixinMaxWidth}
-
+padding-bottom: 6px;
 >.title {
   >h1{
     font-size: 14px;
@@ -104,66 +156,47 @@ ${mixinMaxWidth}
 }
 `;
 
-function Navi({ naviOpen }){
-  return(
-    <NaviStyle naviOpen={ naviOpen }>
-      <Link
-          className="main_title"
-          to={`/`}
-        ><h1><span>Tour Man</span></h1>
-      </Link>
-      <ul className="navi_list">        
-        <li><Link to={`/`}><span>ツアー</span></Link></li>
-        <li><Link to={`/events`}><span>イベント</span></Link></li>
-        <li><Link to={`/places`}><span>会場</span></Link></li>
-      </ul>
-      
-      <ul className="navi_list">
-        <li><Link to={`/events/add`}><span>イベント追加</span></Link></li>
-        <li><Link to={`/places/add`}><span>会場追加</span></Link></li>
-      </ul>  
-    </NaviStyle>
-  );
-}
 
 const NaviStyle = styled.div`
-background-color: rgba(0,0,0,0.9);
-color: #fff;
-position: fixed;
-height: 100%;
-width: 200px;
-padding: 1em 1em 0;
-z-index: 2000;
-top: 0;
-${tab`
-    transition: 0.5s;
-    right: -100%;
-    ${props => (props.naviOpen && "right: 0")};
-`}
-${pc`
-    left: 0;
-`}
-
-.navi_list {
-  margin-top: 2em;
-  li {
-    padding-bottom: 1em;
+.navi_area{
+  background-color: navy;
+  color: #fff;
+  position: fixed;
+  height: 100%;
+  width: 200px;
+  padding: 1em 1em 0;
+  z-index: 3000;
+  top: 0;
+  ${tab`
+      transition: 0.5s;
+      right: -100%;
+      ${props => (props.naviOpen && "right: 0")};
+  `}
+  ${pc`
+      left: 0;
+  `}
+  
+  .navi_list {
+    margin-top: 2em;
+    li {
+      padding-bottom: 1em;
+    }
   }
+}
+.navi_bg{
+  ${pc`
+      display: none;
+  `}
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  z-index: 2000;
+  background-color: rgba(0,0,0,0.7);
 }
 `;
 
-
-function Footer({ toggleNaviOpen }){
-  return(
-    <FooterStyle>
-      <Link
-        className="home"
-        to={`/`}
-      ><span>home</span></Link>
-      <button className="navi_button" onClick={toggleNaviOpen}></button>
-    </FooterStyle>
-  ); 
-}
 
 const FooterStyle = styled.footer`
 position: fixed;
@@ -183,8 +216,6 @@ background-color: #fff;
 }
 `;
 
-
-const MainArea = styled.div`
-margin-top: 100px;
-${mixinMaxWidth}
+const Wrapper = styled.div`
+  padding-bottom: 60px;
 `;

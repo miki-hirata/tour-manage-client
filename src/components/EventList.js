@@ -1,19 +1,29 @@
 import { Link } from "react-router-dom";
-import { FormatDate } from "./index";
+import { FormatDate, StyledCard, CardInnerHead, HeadMainFont, HeadSubFont } from "./index";
+import styled from "styled-components";
 
 export function EventList({ event, tour }) {
-  console.log(event);
   return (
-    <Link
+    
+    <StyledCard>
+      <Link
       key={event.id}
-      className="card link flex"
       to={tour ? `/tours/events/${tour.id}` : `/events/${event.id}`}
-    >
-      <FormatDate date={event.date} />
-      <div className="head_main">
-        <h2 className="name_small"><span>{event.name}</span></h2>
-        {event.Place && <p className="name_large"><span>{event.Place.name}</span></p>}
-      </div>
-  </Link>
+      >
+        <CardInnerHead>
+          <FormatDate date={event.date} />
+          
+          <HeadMainArea>
+            <HeadSubFont>{event.name}</HeadSubFont>
+            {event.Place && 
+              <HeadMainFont>{event.Place.name}</HeadMainFont>}
+          </HeadMainArea>
+        </CardInnerHead>
+      </Link>
+    </StyledCard>
   );
 }
+
+const HeadMainArea = styled.div`
+  margin-left: 40px;
+`;
