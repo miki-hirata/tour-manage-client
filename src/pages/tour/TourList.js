@@ -19,7 +19,6 @@ export function TourListPage({ setHdTitle }) {
       offset: (page - 1) * perPage,
     }).then((data) => {
       setTours(data);
-      setHdTitle('ツアー一覧')
       console.log(data);
     });
   }, [page]); 

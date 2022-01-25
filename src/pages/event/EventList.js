@@ -18,7 +18,6 @@ export function EventListPage({ setHdTitle }) {
       offset: (page - 1) * perPage,
     }).then((data) => {
       setEvents(data);
-      setHdTitle('イベント一覧')
     });
   }, [page]);
 

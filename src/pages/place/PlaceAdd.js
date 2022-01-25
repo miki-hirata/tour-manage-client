@@ -1,32 +1,111 @@
-import { useEffect } from "react";
-import { Breadcrumb } from "../../components";
-import { handleAddPlace } from "../../apis";
+import React from 'react';
+import { useEffect, useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { handleAddPlace, postPlace } from "../../apis";
 
+import { MainArea, StyledCard, CardInner} from "../../components";
+
+class AutoAddress extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: {}
+    };
+  }
+
+  handleChange = e => {
+    const params = this.state.user;
+    params[e.target.name] = e.target.value;
+    this.setState({ user: params });
+  };
+
+  complementAddress = () => {
+    const { AjaxZip3 } = window;
+    AjaxZip3.zip2addr(
+      'postalCodeH',
+      'postalCodeF',
+      'prefecture',
+      'city',
+      'street'
+    );
+  };
+
+  onBlurZipcode = () => {
+    this.setState({
+      user: {
+        ...this.state.user,
+        prefecture: document.getElementById('prefecture').value,
+        city: document.getElementById('city').value,
+        street: document.getElementById('street').value
+      }
+    });
+  };
+
+  render() {
+    return(
+      <>
+        <input
+          name="postalCodeH"
+          size="3"
+          maxLength="3"
+          onChange={e => this.handleChange(e)}
+        />
+        -
+        <input
+          name="postalCodeF"
+          size="4"
+          maxLength="4"
+          onChange={e => this.handleChange(e)}
+          onKeyUp={this.complementAddress}
+          onBlur={this.onBlurZipcode}
+        />
+        <input
+            name="prefecture"
+            id="prefecture"
+            placeholder="都道府県"
+            onChange={e => this.handleChange(e)}
+        />
+        <input
+            name="city"
+            id="city"
+            placeholder="市町村"
+            onChange={e => this.handleChange(e)}
+        />
+        <input
+            name="street"
+            id="street"
+            placeholder="番地"
+            onChange={e => this.handleChange(e)}
+        />
+      </>
+    )  
+  }
+}
+export default AutoAddress;
 
 export function PlaceAddPage({ setHdTitle }) {
   
-
-  
-  useEffect(() => {
-    setHdTitle('会場新規登録')
-  }, []);
+  const { register, handleSubmit, formState: { errors }, control, setValue } = useForm();
+  const onSubmit = data => { 
+    console.log(data);
+    postPlace(data, 'add');
+  }
 
   return (
-    <>
-    
-    <Breadcrumb
-      links={[
-        { href: "/", content: "トップページ" },
-        { href: "/places", content: "会場一覧" },
-        {
-          href: "/places/add",
-          content: "新規会場追加",
-          active: true,
-        },
-      ]}
-    />
-    <div className="card">
+    <MainArea>
+      <StyledCard
+        variant="outlined"
+        >
+        <CardInner>
       <form onSubmit={handleAddPlace} className="h-adr">
+        
+        <dl>
+          <dt>会場名</dt>
+          <dd>
+            <input type="text" placeholder="name" {...register("name", {required: true, maxLength: 40})} />
+            { errors.name && <span className="text-danger">必須・40文字以下</span> }
+          </dd>
+        </dl>
         <div className="head_main">
             <input type="text" name="name" placeholder="会場名" className="name_large"/>
           </div>
@@ -55,51 +134,12 @@ export function PlaceAddPage({ setHdTitle }) {
             <div className="fax">
               <textarea type="text" name="fax" placeholder="FAX"/>
             </div>
-          </div>{/* 
-          <div className="country">
-            <input
-              type="text"
-              className="country"
-              name="country" 
-              placeholder="国名"
-              value="Japan"
-            />
           </div>
-          <div className="postalCode">
-            <input
-              type="text"
-              className="p-postal-code"
-              name="postalCode" 
-              placeholder="郵便番号"
-            />
-          </div>
-          <div className="prefecture">
-            <input
-              type="text"
-              className="p-region"
-              name="prefecture" 
-              placeholder="都道府県"
-            />
-          </div>
-          <div className="city">
-            <input
-              type="text"
-              className="p-locality"
-              name="city"
-              placeholder="市町村"
-            />
-          </div>
-          <div className="street">
-            <input
-              type="text"
-              className="p-street-address p-extended-address"
-              name="street"
-              placeholder="番地"
-            />
-          </div>  */}
+          <AutoAddress />
           <button type="submit">追加</button>
       </form>
-    </div>
-    </>
+        </CardInner>
+      </StyledCard>
+    </MainArea>
   );
 }

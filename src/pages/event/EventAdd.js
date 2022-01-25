@@ -27,7 +27,6 @@ export function EventAddPage({ setHdTitle }) {
     getEventCats().then((data) =>{ 
       if (!unmounted) {
         setEventCats(data);
-        setHdTitle('イベント新規登録')
       }
     });
     getTours().then((data) =>{ 

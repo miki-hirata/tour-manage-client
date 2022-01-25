@@ -1,23 +1,19 @@
 import { useState } from "react";
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 import { RootPage } from "./pages/Root.js";
+import { AddPage } from "./pages/Add.js";
 import { EventListPage, EventDetailPage, EventAddPage } from "./pages/event";
 import { PlaceListPage, PlaceDetailPage, PlaceAddPage } from "./pages/place";
 import { TourListPage, TourDetailPage, TourEventDetailPage } from "./pages/tour";
-/* 
-import { PlaceListPage } from "./pages/PlaceList.js";
-import { PlaceDetailPage } from "./pages/PlaceDetail.js";
-import { PlaceAddPage } from "./pages/place/PlaceAdd.js";
-import { TourListPage } from "./pages/TourList.js";
-import { TourDetailPage } from "./pages/tour/TourDetail.js";
-import { TourEventDetailPage } from "./pages/TourEventDetail.js"; */
-
 import { pc, sp, tab, onlyTab, onlyPC, mixinMaxWidth } from './setting';
 import MediaQuery from "react-responsive";
 import styled from "styled-components";
 import IconButton from '@mui/material/IconButton';
 import HomeIcon from '@mui/icons-material/Home';
 import MenuIcon from '@mui/icons-material/Menu';
+
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
 
 function Header({ title }) {
   return (
@@ -98,28 +94,22 @@ export default function App() {
         <Header title={hdTitle}/>
         <Switch>
           <Route path="/" exact>
-            <TourListPage setHdTitle={setHdTitle} />
+            <RootPage setHdTitle={setHdTitle} />
           </Route>
-          {/* <Route path="/tours/add" exact>
-            <TourAddPage />
-          </Route> */}
+          <Route path="/add" exact>
+            <AddPage setHdTitle={setHdTitle} />
+          </Route>
           <Route path="/tours/events/:tourId" exact>
             <TourEventDetailPage setHdTitle={setHdTitle} />
           </Route>
           <Route path="/tours/:tourId" exact>
             <TourDetailPage setHdTitle={setHdTitle} />
           </Route>
-          <Route path="/events" exact>
-            <EventListPage setHdTitle={setHdTitle} />
-          </Route>
           <Route path="/events/add" exact>
             <EventAddPage setHdTitle={setHdTitle} />
           </Route>
           <Route path="/events/:eventId">
             <EventDetailPage setHdTitle={setHdTitle} />
-          </Route>
-          <Route path="/places" exact>
-            <PlaceListPage setHdTitle={setHdTitle} />
           </Route>
           <Route path="/places/add" exact>
             <PlaceAddPage setHdTitle={setHdTitle} />
@@ -128,6 +118,13 @@ export default function App() {
             <PlaceDetailPage setHdTitle={setHdTitle} />
           </Route>
         </Switch>
+        <Link
+          to={`/add`}
+        >
+          <Fab color="primary" aria-label="edit">
+            <AddIcon />
+          </Fab>
+        </Link>
         <MediaQuery query={onlyTab}>
           <Footer toggleNaviOpen={toggleNaviOpen}/>
         </MediaQuery>

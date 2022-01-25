@@ -18,7 +18,7 @@ export async function getPlaceMemos(placeId) {
 }
 
 //POSTリクエストをまとめる　typeに文字列で挿入する
-async function postPlace(place, type){
+export async function postPlace(place, type){
   return request(`/places/${type}`, {
     body: JSON.stringify(place),
     headers: {

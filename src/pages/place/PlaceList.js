@@ -19,7 +19,6 @@ export function PlaceListPage({ setHdTitle }) {
       offset: (page - 1) * perPage,
     }).then((data) => {
       setPlaces(data);
-      setHdTitle('会場一覧')
     });
   }, [page]); 
 

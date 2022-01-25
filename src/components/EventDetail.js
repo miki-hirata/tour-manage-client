@@ -4,6 +4,9 @@ import { handleDeleteEvent, handleEditEvent, getEventSches } from "../apis";
 import { FormatDate, FormatUpdate, StyledCard, CardInnerHead, CardInner, HeadMainFont, HeadSubFont } from "./index";
 import styled from "styled-components";
 
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
 
 function EventDeleteButton({ event }) {
   return (
@@ -28,7 +31,13 @@ export function EventDetail({ event, sches }) {
     if(edit){
       return <button type="submit">更新</button>
     } else {
-      return <button onClick={toggleEdit}>編集</button>
+      return (
+      <button onClick={toggleEdit}>
+        <Fab color="primary" aria-label="edit">
+          <EditIcon />
+        </Fab>
+      </button>
+      );
     }
   }
   let defaultDate = new Date(event.date);//日付を何とかしてデフォルトセットしたい

@@ -15,7 +15,7 @@ export async function getTourEvents(tourId) {
 }
 
 //POSTリクエストをまとめる　typeに文字列で挿入する
-async function postTour(tour, type){
+export async function postTour(tour, type){
   return request(`/tours/${type}`, {
     body: JSON.stringify(tour),
     headers: {

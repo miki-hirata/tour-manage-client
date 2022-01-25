@@ -8,7 +8,7 @@ import { EventListPage, EventDetailPage, EventAddPage } from "./event";
 import { PlaceListPage, PlaceDetailPage, PlaceAddPage } from "./place";
 import { TourListPage, TourDetailPage, TourEventDetailPage } from "./tour";
 
-export function RootPage({ setHdTitle }) {
+export function AddPage({ setHdTitle }) {
   
   const [index, setIndex] = useState(0);
   const handleChange = (ind) => {
@@ -16,9 +16,9 @@ export function RootPage({ setHdTitle }) {
   }
   
   useEffect(() => {
-    setHdTitle('TOP')
+    setHdTitle('新規登録')
   }, []);
-  
+
   return (
     <>
       <TabArea>
@@ -30,6 +30,7 @@ export function RootPage({ setHdTitle }) {
           <StyledTab label="ツアー" />
           <StyledTab label="会場" />
           <StyledTab label="イベント" />
+          <StyledTab label="その他" />
         </StyledTabs>
       </TabArea>
       <SwipeableViews
@@ -37,9 +38,9 @@ export function RootPage({ setHdTitle }) {
         index={index}
         onChangeIndex={(index) => handleChange(index)}
       >
-        <TourListPage/>
-        <PlaceListPage/>
-        <EventListPage/>
+          {/* <TourAddPage/> */}
+        <PlaceAddPage/>
+        <EventAddPage/>
       </SwipeableViews> 
     </>
   );
