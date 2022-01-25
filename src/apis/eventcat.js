@@ -1,11 +1,11 @@
 import { request } from "./index";
 
 //各パスへGETリクエストを行う関数
-export async function getEvents(arg = {}) {
+export async function getEventCats(arg = {}) {
   const params = new URLSearchParams(arg);
-  return request(`/events?${params.toString()}`);
+  return request(`/eventcats?${params.toString()}`);
 }
-
+/* 
 export async function getEvent(eventId) {
   return request(`/events?id=${eventId}`);
 }
@@ -13,6 +13,7 @@ export async function getEvent(eventId) {
 export async function getEventSches(eventId) {
   return request(`/events/sches?id=${eventId}`);
 }
+
 
 //POSTリクエストをまとめる　typeに文字列で挿入する
 //リダイレクト処理が上手くいっていない
@@ -25,16 +26,6 @@ export async function postEvent(event, type){
     method: "POST",
   });
 }
-
-/* export async function handleAddEvent(content) {
-  const event = {
-    "name": content.target.elements.name.value,
-    "date": content.target.elements.date.value,
-    "placeId": content.target.elements.placeId.value,
-    "memo": content.target.elements.memo.value
-  };
-  await postEvent(event, 'add');
-} */
 
 export async function handleEditEvent(content) {
   const event = {
@@ -53,3 +44,4 @@ export async function handleDeleteEvent(content) {
   };
   await postEvent(event, 'delete');
 }
+ */

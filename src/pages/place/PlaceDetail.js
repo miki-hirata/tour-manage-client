@@ -22,7 +22,7 @@ function PlaceDetail({ place }) {
   const toggleEdit = () => setEdit(!edit);
   function EditButton() {
     if(edit){
-      return <button type="submit">更新</button>
+      return <button type="submit" onClick={toggleEdit}>更新</button>
     } else {
       return <button onClick={toggleEdit}>編集</button>
     }
@@ -30,14 +30,23 @@ function PlaceDetail({ place }) {
 
   return (
     <>
-      <form onSubmit={handleEditPlace}>       
+      <form 
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleEditPlace();
+        }}
+      >       
         <StyledCard
           variant="outlined"
           >
           <CardInner>
             <dl>
+              <dt>名前</dt>
+              <dd><input type="text" name="name" defaultValue={place.name} disabled={!edit}/></dd>
+            </dl>
+            <dl>
               <dt>カテゴリー</dt>
-              <dd>{place.PlaceCat.name}</dd>
+              {place.PlaceCat ? <dd>{place.PlaceCat.name}</dd> : '未登録'}
             </dl>
             <dl>
               <dt>ID</dt>
@@ -114,16 +123,26 @@ export function PlaceDetailPage({ setHdTitle }) {
   }
 
   useEffect(() => {
+    let unmounted = false;//メモリリーク防止
     getPlaceEvents(params.placeId).then((data) => {
-      setEvents(data);
+      if (!unmounted) {
+        setEvents(data);
+      }
     });
     getPlaceMemos(params.placeId).then((data) => {
-      setPlaceMemos(data);
+      if (!unmounted) {
+        setPlaceMemos(data);
+      }
     });
     getPlace(params.placeId).then((data) => {
-      setPlace(data);
-      setHdTitle(data.name)
+      if (!unmounted) {
+        setPlace(data);
+        setHdTitle(data.name)
+      }
     });
+    return () => {
+      unmounted = true;
+    };
   }, [params.placeId]);
   
   return (

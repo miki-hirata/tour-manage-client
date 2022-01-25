@@ -8,7 +8,11 @@ import styled from "styled-components";
 function EventDeleteButton({ event }) {
   return (
     <>
-      <form onSubmit={handleDeleteEvent}>
+      <form onSubmit={(e) => {
+          //e.preventDefault();
+          handleDeleteEvent();
+        }}
+      >
         <input type="hidden" name="id" value={event.id}/>
         <button type="submit">削除</button>
       </form>
@@ -79,7 +83,7 @@ export function EventDetail({ event, sches }) {
           </dl>
           <dl>
             <dt>カテゴリー</dt>
-            <dd>{event.EventCat.name}</dd>
+            {event.EventCat ? <dd>{event.EventCat.name}</dd> : '未登録'}
           </dl>
           <dl>
             <dt>メモ</dt>
@@ -87,13 +91,6 @@ export function EventDetail({ event, sches }) {
           </dl>
         </CardInner>
       </StyledCard>
-
-        <div className="card">
-          <div className="num">
-            <span>ID</span>
-            <span>{event.id}</span>
-          </div>
-        </div>
         {/* <SelectPlace /> */}
         <input type="hidden" name="id" value={event.id}/>
         <EditButton />

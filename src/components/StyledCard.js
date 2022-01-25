@@ -3,6 +3,7 @@ import Card from '@mui/material/Card';
 
 export const StyledCard = styled(Card)`
   margin-top: 0.75em;
+  margin-bottom: 2px;//一番下のカードの枠線が消えてしまうため追加
   &:first-child{
     margin-top: 2em;
   }

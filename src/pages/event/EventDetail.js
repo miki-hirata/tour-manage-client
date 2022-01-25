@@ -15,13 +15,21 @@ export function EventDetailPage({ setHdTitle }) {
   const page = +query.get("page") || 1;
 
   useEffect(() => {
+    let unmounted = false;//メモリリーク防止
     getEventSches(params.eventId).then((data) =>{ 
-      setSches(data);
+      if (!unmounted) {
+        setSches(data);
+      }
     });
     getEvent(params.eventId).then((data) => {
-      setEvent(data);
-      setHdTitle(data.name);
+      if (!unmounted) {
+        setEvent(data);
+        setHdTitle(data.name);
+      }
     });
+    return () => {
+      unmounted = true;
+    };
   }, [params.eventId]);
 
   return (
