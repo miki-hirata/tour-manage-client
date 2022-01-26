@@ -33,15 +33,22 @@ export const mixinColor = css`
 //使うときは${mixinColor} 
 
 
+
+export const shadow = css`
+  box-shadow: 2px 2px 4px -4px rgba(0,0,0,0.6);
+`;
+
 export const mixinMaxWidth = css`
   ${pc`
-      padding-left: 290px;
-      padding-right: 100px;
+      padding-left: 150px;
+      padding-right: 150px;
   `}
   ${tab`
-      padding: 0 30px;
+      padding-left: 30px;
+      padding-right: 30px;
   `}
   ${sp`
-      padding: 0 15px;
+      padding-left: 15px;
+      padding-right: 15px;
   `}
 `;

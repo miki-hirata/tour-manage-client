@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
 import { useLocation, useParams, Link } from "react-router-dom";
 import { handleDeleteEvent, handleEditEvent, getEventSches } from "../apis";
-import { FormatDate, FormatUpdate, StyledCard, CardInnerHead, CardInner, HeadMainFont, HeadSubFont } from "./index";
+import { FormatDate, FormatUpdate, StyledCard, CardInnerHead, CardInner, HeadMainFont, HeadSubFont, StyledEditButton } from "./index";
 import styled from "styled-components";
 
-import Fab from '@mui/material/Fab';
-import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
 
 function EventDeleteButton({ event }) {
   return (
@@ -32,11 +29,7 @@ export function EventDetail({ event, sches }) {
       return <button type="submit">更新</button>
     } else {
       return (
-      <button onClick={toggleEdit}>
-        <Fab color="primary" aria-label="edit">
-          <EditIcon />
-        </Fab>
-      </button>
+        <StyledEditButton toggleEdit={toggleEdit}/>
       );
     }
   }

@@ -2,84 +2,60 @@ import { useState } from "react";
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 import { RootPage } from "./pages/Root.js";
 import { AddPage } from "./pages/Add.js";
-import { EventListPage, EventDetailPage, EventAddPage } from "./pages/event";
-import { PlaceListPage, PlaceDetailPage, PlaceAddPage } from "./pages/place";
-import { TourListPage, TourDetailPage, TourEventDetailPage } from "./pages/tour";
-import { pc, sp, tab, onlyTab, onlyPC, mixinMaxWidth } from './setting';
-import MediaQuery from "react-responsive";
+import { EventDetailPage } from "./pages/event";
+import { PlaceDetailPage } from "./pages/place";
+import { TourDetailPage, TourEventDetailPage } from "./pages/tour";
+import { pc, sp, tab, shadow, mixinMaxWidth } from './setting';
 import styled from "styled-components";
-import IconButton from '@mui/material/IconButton';
-import HomeIcon from '@mui/icons-material/Home';
-import MenuIcon from '@mui/icons-material/Menu';
-
 import Fab from '@mui/material/Fab';
+import HomeIcon from '@mui/icons-material/Home';
 import AddIcon from '@mui/icons-material/Add';
 
 function Header({ title }) {
   return (
     <HeaderStyle>
-      <div className="header_area">
-        <div className="title">
+      <div className="title_area">
+        
+        <Link
+            className="main_title"
+            to={`/`}
+          ><h1><span>Tour M.</span></h1>
+        </Link>
+        <div className="page_title">
           <h1>{title}</h1>
         </div>
       </div>
-      <div className="header_margin"></div>
+      <div className="user_area"></div>
     </HeaderStyle>
   );
 }
 
-function Navi({ naviOpen, toggleNaviOpen }){
-  return(
-    <NaviStyle naviOpen={ naviOpen }>
-      <div className="navi_area">
-        <Link
-            className="main_title"
-            to={`/`}
-          ><h1><span>Tour Man</span></h1>
-        </Link>
-        <ul className="navi_list">        
-          <li><Link to={`/`}><span>ツアー</span></Link></li>
-          <li><Link to={`/events`}><span>イベント</span></Link></li>
-          <li><Link to={`/places`}><span>会場</span></Link></li>
-        </ul>
-        
-        <ul className="navi_list">
-          <li><Link to={`/events/add`}><span>イベント追加</span></Link></li>
-          <li><Link to={`/places/add`}><span>会場追加</span></Link></li>
-        </ul>  
-      </div>
-      {/* <button className="navi_bg" onClick={toggleNaviOpen}></button> */}
-    </NaviStyle>
+function AddButton({ }) {
+  return (
+    <AddButtonStyle>
+      <Link
+        to={`/add`}
+      >
+        <Fab size="medium" color="secondary" aria-label="add">
+          <AddIcon />
+        </Fab>
+      </Link>
+    </AddButtonStyle>
   );
 }
 
-
-function Footer({ toggleNaviOpen }){
-  return(
-  <FooterStyle>
-    <Link
-      className="home"
-      to={`/`}
-    >
-      <IconButton
-        size="large"
-        color="inherit"
-        aria-label="home"
+function HomeButton({ }) {
+  return (
+    <HomeButtonStyle>
+      <Link
+        to={`/`}
       >
-        <HomeIcon />
-      </IconButton>
-    </Link>
-    
-    <IconButton
-      size="large"
-      color="inherit"
-      aria-label="menu"
-      onClick={toggleNaviOpen}
-    >
-      <MenuIcon />
-    </IconButton>
-  </FooterStyle>
-  ); 
+        <Fab size="medium" color="primary" aria-label="home">
+          <HomeIcon />
+        </Fab>
+      </Link>
+    </HomeButtonStyle>
+  );
 }
 
 export default function App() {
@@ -90,7 +66,7 @@ export default function App() {
   return (
     <Wrapper>
       <Router>
-        <Navi naviOpen={naviOpen}/>
+        {/* <Navi naviOpen={naviOpen}/> */}
         <Header title={hdTitle}/>
         <Switch>
           <Route path="/" exact>
@@ -105,29 +81,15 @@ export default function App() {
           <Route path="/tours/:tourId" exact>
             <TourDetailPage setHdTitle={setHdTitle} />
           </Route>
-          <Route path="/events/add" exact>
-            <EventAddPage setHdTitle={setHdTitle} />
-          </Route>
           <Route path="/events/:eventId">
             <EventDetailPage setHdTitle={setHdTitle} />
-          </Route>
-          <Route path="/places/add" exact>
-            <PlaceAddPage setHdTitle={setHdTitle} />
           </Route>
           <Route path="/places/:placeId" exact>
             <PlaceDetailPage setHdTitle={setHdTitle} />
           </Route>
         </Switch>
-        <Link
-          to={`/add`}
-        >
-          <Fab color="primary" aria-label="edit">
-            <AddIcon />
-          </Fab>
-        </Link>
-        <MediaQuery query={onlyTab}>
-          <Footer toggleNaviOpen={toggleNaviOpen}/>
-        </MediaQuery>
+        <HomeButton/>
+        <AddButton/>
       </Router>
     </Wrapper>
   );
@@ -138,23 +100,64 @@ const HeaderStyle = styled.header`
 background-color: #fff;
 position: sticky;
 top: 0;
-height: 40px;
 width: 100%;
 display: flex;
 align-items: flex-end;
+padding-bottom: 6px;
 z-index: 1000;
 ${mixinMaxWidth}
-padding-bottom: 6px;
->.title {
-  >h1{
-    font-size: 14px;
-    line-height: 2;
+${shadow}
+
+${pc`
+  height: 60px;
+`}
+${tab`
+  height: 50px;
+`}
+${sp`
+  height: 40px;
+`}
+>.title_area{
+  display: flex;
+  overflow: hidden;
+  ${pc`
+    font-size: 24px;
+  `}
+  ${tab`
+    font-size: 20px;
+  `}
+  ${sp`
+    font-size: 16px;
+  `}
+  
+  .main_title{
+    font-weight: bold;
+    margin-right: 1.5em;
+  }
+  .head_title{
+    letter-spacing: 0.2em;
   }
 }
 `;
 
+const Wrapper = styled.div`
+  padding-bottom: 80px;
+`;
 
-const NaviStyle = styled.div`
+
+const AddButtonStyle = styled.div`
+position: fixed;
+right: 80px;
+bottom: 20px;
+`;
+
+const HomeButtonStyle = styled.div`
+position: fixed;
+right: 20px;
+bottom: 20px;
+`;
+
+/* const NaviStyle = styled.div`
 .navi_area{
   background-color: navy;
   color: #fff;
@@ -192,10 +195,10 @@ const NaviStyle = styled.div`
   z-index: 2000;
   background-color: rgba(0,0,0,0.7);
 }
-`;
+`; */
 
 
-const FooterStyle = styled.footer`
+/* const FooterStyle = styled.footer`
 position: fixed;
 left: 0;
 bottom: 0;
@@ -212,7 +215,60 @@ background-color: #fff;
   background-color: red;
 }
 `;
+ */
 
-const Wrapper = styled.div`
-  padding-bottom: 60px;
-`;
+/* 
+function Navi({ naviOpen, toggleNaviOpen }){
+  return(
+    <NaviStyle naviOpen={ naviOpen }>
+      <div className="navi_area">
+        <Link
+            className="main_title"
+            to={`/`}
+          ><h1><span>Tour Man</span></h1>
+        </Link>
+        <ul className="navi_list">        
+          <li><Link to={`/`}><span>ツアー</span></Link></li>
+          <li><Link to={`/events`}><span>イベント</span></Link></li>
+          <li><Link to={`/places`}><span>会場</span></Link></li>
+        </ul>
+        
+        <ul className="navi_list">
+          <li><Link to={`/events/add`}><span>イベント追加</span></Link></li>
+          <li><Link to={`/places/add`}><span>会場追加</span></Link></li>
+        </ul>  
+      </div>
+      <button className="navi_bg" onClick={toggleNaviOpen}></button> 
+    </NaviStyle>
+  );
+}
+ */
+
+
+/* function Footer({ toggleNaviOpen }){
+  return(
+  <FooterStyle>
+    <Link
+      className="home"
+      to={`/`}
+    >
+      <IconButton
+        size="large"
+        color="inherit"
+        aria-label="home"
+      >
+        <HomeIcon />
+      </IconButton>
+    </Link>
+    
+    <IconButton
+      size="large"
+      color="inherit"
+      aria-label="menu"
+      onClick={toggleNaviOpen}
+    >
+      <MenuIcon />
+    </IconButton>
+  </FooterStyle>
+  ); 
+} */

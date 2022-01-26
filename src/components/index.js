@@ -22,5 +22,7 @@ export * from "./StyledTabs.js";
 export * from "./StyledCard.js";
 export * from "./StyledFont.js";
 
+export * from "./StyledButton.js";
+
 export * from "./Layouts.js";
 

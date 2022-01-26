@@ -1,8 +1,8 @@
 
 export * from "./event.js";
-
 export * from "./eventcat.js";
 export * from "./place.js";
+export * from "./placecat.js";
 export * from "./tour.js";
 
 

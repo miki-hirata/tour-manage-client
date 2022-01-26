@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { FormatDate, StyledCard, CardInnerHead, HeadMainFont, HeadSubFont } from "./index";
 import styled from "styled-components";
+import { pc, sp, tab, shadow, mixinMaxWidth } from '../setting';
 
 export function EventList({ event, tour }) {
   return (
@@ -26,4 +27,7 @@ export function EventList({ event, tour }) {
 
 const HeadMainArea = styled.div`
   margin-left: 40px;
+  ${sp`
+    margin-left: 20px;
+  `}
 `;

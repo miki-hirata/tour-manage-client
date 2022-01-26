@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { useLocation, useParams, Link } from "react-router-dom";
 import SwipeableViews from 'react-swipeable-views';
-import { MainArea, Loading, EventList, PlaceList, FormatUpdate, TabArea, StyledTabs, StyledTab,StyledCard, CardInner} from "../components";
-import { getPlaces, getPlaceEvents, getPlaceMemos, handleDeletePlace, handleEditPlace } from "../apis";
+import { TabArea, StyledTabs, StyledTab,StyledCard, CardInner} from "../components";
 
-import { EventListPage, EventDetailPage, EventAddPage } from "./event";
-import { PlaceListPage, PlaceDetailPage, PlaceAddPage } from "./place";
-import { TourListPage, TourDetailPage, TourEventDetailPage } from "./tour";
+import { EventAddPage } from "./event";
+import { PlaceAddPage } from "./place";
+import { TourAddPage } from "./tour";
 
 export function AddPage({ setHdTitle }) {
   
@@ -26,19 +25,24 @@ export function AddPage({ setHdTitle }) {
           value={index}
           onChange={(e,value)=>handleChange(value)}
           indicatorColor="primary"
+          variant="scrollable"
+          //scrollButtons
+          //allowScrollButtonsMobile
         >
           <StyledTab label="ツアー" />
           <StyledTab label="会場" />
           <StyledTab label="イベント" />
-          <StyledTab label="その他" />
+          {/* <StyledTab label="その他" /> */}
         </StyledTabs>
+        
       </TabArea>
+      
       <SwipeableViews
         enableMouseEvents
         index={index}
         onChangeIndex={(index) => handleChange(index)}
       >
-          {/* <TourAddPage/> */}
+        <TourAddPage/>
         <PlaceAddPage/>
         <EventAddPage/>
       </SwipeableViews> 

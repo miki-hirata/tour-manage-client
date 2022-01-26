@@ -66,14 +66,22 @@ export function TourDetailPage({ setHdTitle }) {
   }
 
   useEffect(() => {
-    getTour(params.tourId).then((data) => {
-      setTour(data);
-      setHdTitle(data.name)
-    });
+    let unmounted = false;//メモリリーク防止
     getTourEvents(params.tourId).then((data) => {
-      setEvents(data);
-      console.log(data);
+      if (!unmounted) {
+        setEvents(data);
+        console.log(data);
+      }
     });
+    getTour(params.tourId).then((data) => {
+      if (!unmounted) {
+        setTour(data);
+        setHdTitle(data.name)
+      }
+    });
+    return () => {
+      unmounted = true;
+    };
   }, [params.tourId]);
   
 
@@ -89,7 +97,7 @@ export function TourDetailPage({ setHdTitle }) {
               onChange={(e,value)=>handleChange(value)}
               indicatorColor="primary"
             >
-              <StyledTab label="ツアースケジュール" />
+              {events.length >= 1 && <StyledTab label="スケジュール" />}
               <StyledTab label="ツアー情報" />
             </StyledTabs>
           </TabArea>
@@ -98,11 +106,13 @@ export function TourDetailPage({ setHdTitle }) {
             index={index}
             onChangeIndex={(index) => handleChange(index)}
           >
-            <MainArea>
-              {events && events.map((event) => {
-                return <EventList key={event.id} event={event} tour={tour}/>;
-              })}
-            </MainArea>
+            {events.length >= 1 &&
+              <MainArea>
+                {events.map((event) => {
+                  return <EventList key={event.id} event={event} tour={tour}/>;
+                })}
+              </MainArea>
+            }
           
             <MainArea>
               <TourDetail tour={tour}/>

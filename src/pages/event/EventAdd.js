@@ -1,21 +1,24 @@
 import * as React from 'react';
 
 import { useEffect, useState } from "react";
-import { MainArea, StyledCard, CardInner} from "../../components";
+import { MainArea, StyledCard, CardInner, AddUl } from "../../components";
 
 import { useForm, Controller } from "react-hook-form";
-import { postEvent, getEventCats, getTours } from "../../apis";
+import { postEvent, getPlaces, getEventCats, getTours } from "../../apis";
 import DateAdapter from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import TextField from '@mui/material/TextField';
-
-import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
+import MenuItem from '@mui/material/MenuItem';
+import Button from '@mui/material/Button';
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
 
 export function EventAddPage({ setHdTitle }) {
   const [eventCats, setEventCats] = useState(null);
   const [Tours, setTours] = useState(null);
+  
+  const [Places, setPlaces] = useState(null);
   const { register, handleSubmit, formState: { errors }, control, setValue } = useForm();
+  //const { register, handleSubmit, errors, control, setValue } = useForm();
 
   const onSubmit = data => { 
     console.log(data);
@@ -34,6 +37,11 @@ export function EventAddPage({ setHdTitle }) {
         setTours(data);
       }
     });
+    getPlaces().then((data) =>{ 
+      if (!unmounted) {
+        setPlaces(data);
+      }
+    });
     return () => {
       unmounted = true;
     };
@@ -45,80 +53,138 @@ export function EventAddPage({ setHdTitle }) {
         variant="outlined"
         >
         <CardInner>
-          
-        <LocalizationProvider dateAdapter={DateAdapter}>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <dl>
-              <dt>日付</dt>
-              <dd>
-                <Controller
-                  name="date"
-                  control={control}
-                  defaultValue={new Date()}
-                  render={({field}) => {
-                    return (
-                      <DesktopDatePicker
-                        {...field}
-                        label="input"
-                        inputFormat="yyyy/MM/dd"
-                        mask="____/__/__"
-                        renderInput={(props) => <TextField {...props} />}
-                        onChange={(newValue) => {
-                          setValue('date', newValue)
-                        }}
-                      />
-                    )
-                  }}
-                />
-                {/* <input type="date" placeholder="date" {...register("date")} /> */}
-              </dd>
-            </dl>
-            <dl>
-              <dt>イベント名</dt>
-              <dd>
-                <input type="text" placeholder="name" {...register("name", {required: true, maxLength: 40})} />
-                { errors.name && <span className="text-danger">必須・40文字以下</span> }
-              </dd>
-            </dl>
-            <dl>
-              <dt>メモ</dt>
-              <dd>
-              <input type="text" placeholder="memo" {...register("memo", { maxLength: 100})} />
-                { errors.name && <span className="text-danger">100文字以下</span> }
-              </dd>
-            </dl>
-            <dl>
-              <dt>カテゴリー</dt>
-              <dd>
-                <select defaultValue='1' {...register("EventCatId")}>
-                  {eventCats && eventCats.map((eventCat) => {
-                    return <option key={eventCat.id} value={eventCat.id}>{eventCat.name}</option>;
-                  })}
-                </select>
-              </dd>
-            </dl>
-            <dl>
-              <dt>ツアー</dt>
-              <dd>
-                <select {...register("TourId")}>
-                  <option hidden>選択してください</option>
-                  {Tours && Tours.map((tour) => {
-                    return <option key={tour.id} value={tour.id}>{tour.name}</option>;
-                  })}
-                </select>
-              </dd>
-            </dl>
-            <input type="submit" />
-          </form>
-        </LocalizationProvider>
-          {/* 
-          <form onSubmit={handleAddEvent} className="card">
-            <input type="date" name="date" placeholder="日付"/>
-            <input type="text" name="name" placeholder="イベント名" className="name_large"/>
-            <input type="number" name="placeId" placeholder="会場ID" className="name_large"/>
-            <textarea type="text" name="memo" placeholder="メモ" />
-            <button type="submit">追加</button>
-          </form> */}
+          <LocalizationProvider dateAdapter={DateAdapter}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <AddUl>
+                <li>
+                  <Controller
+                    name="date"
+                    control={control}
+                    defaultValue={new Date()}
+                    render={({field}) => {
+                      return (
+                        <MobileDatePicker
+                          {...field}
+                          label="日付"
+                          inputFormat="yyyy/MM/dd"
+                          mask="____/__/__"
+                          renderInput={(props) => <TextField {...props} variant="standard" fullWidth />}
+                          onChange={(newValue) => {
+                            setValue('date', newValue)
+                          }}
+                        />
+                      )
+                    }}
+                  />
+                </li>
+                <li>
+                  <TextField
+                    label="イベント名"
+                    fullWidth
+                    variant="standard"
+                    {...register("name", { required: true })}
+                    error={Boolean(errors.name)}
+                    helperText={errors.name && errors.name.message}
+                  />
+                </li>
+                <li>
+                  <TextField
+                    label="メモ"
+                    fullWidth
+                    id="select"
+                    rows={3}
+                    variant="standard"
+                    {...register("memo")}
+                    error={Boolean(errors.memo)}
+                    helperText={errors.memo && errors.memo.message}
+                  />
+                </li>
+                <li>
+                  <Controller
+                    name="EventCatId"
+                    control={control}
+                    defaultValue="1"
+                    rules={{ required: "required!" }}
+                    variant="standard"
+                    render={({field}) => {
+                      return (
+                      <TextField
+                        select
+                        label="カテゴリー"
+                        fullWidth
+                        id="select"
+                        variant="standard"
+                        error={Boolean(errors.EventCatId)}
+                        helperText={errors.EventCatId && errors.EventCatId.message}
+                      >
+                        {eventCats && eventCats.map((eventCat) => (
+                          <MenuItem value={eventCat.id} key={eventCat.id}>
+                            {eventCat.name}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                      )
+                    }}
+                  />
+                </li>
+                <li>
+                  <Controller
+                    name="TourId"
+                    control={control}
+                    defaultValue="1"
+                    rules={{ required: "required!" }}
+                    render={({field}) => {
+                      return (
+                      <TextField
+                        select
+                        label="ツアー"
+                        fullWidth
+                        variant="standard"
+                        error={Boolean(errors.TourId)}
+                        helperText={errors.TourId && errors.TourId.message}
+                      >
+                        {Tours && Tours.map((tour) => (
+                          <MenuItem value={tour.id} key={tour.id}>
+                            {tour.name}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                      )
+                    }}
+                  />
+                </li>
+                <li>
+                  <Controller
+                    name="PlaceId"
+                    control={control}
+                    defaultValue="1"
+                    rules={{ required: "required!" }}
+                    render={({field}) => {
+                      return (
+                      <TextField
+                        select
+                        label="会場"
+                        fullWidth
+                        error={Boolean(errors.PlaceId)}
+                        helperText={errors.PlaceId && errors.PlaceId.message}
+                        variant="standard"
+                      >
+                        {Places && Places.map((Place) => (
+                          <MenuItem value={Place.id} key={Place.id}>
+                            {Place.name}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                      )
+                    }}
+                  />
+                </li>
+                <Button type="submit" variant="contained" color="primary" className='submit_button'>
+                  新規登録
+                </Button>
+              </AddUl>
+            </form>
+          </LocalizationProvider>
         </CardInner>
       </StyledCard>
     </MainArea>

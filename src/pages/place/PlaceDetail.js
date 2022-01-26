@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useParams, Link } from "react-router-dom";
-import { MainArea, Loading, EventList, PlaceMemoList, FormatUpdate, TabArea, StyledTabs, StyledTab,StyledCard, CardInner} from "../../components";
+import { MainArea, Loading, EventList, PlaceMemoList, FormatUpdate, TabArea, StyledTabs, StyledTab, StyledCard, CardInner} from "../../components";
 import { getPlace, getPlaceEvents, getPlaceMemos, handleDeletePlace, handleEditPlace } from "../../apis";
 import SwipeableViews from 'react-swipeable-views';
 
@@ -113,11 +113,9 @@ export function PlaceDetailPage({ setHdTitle }) {
   const [place, setPlace] = useState(null);
   const [events, setEvents] = useState(null);
   const [placeMemos, setPlaceMemos] = useState(null);
-
   const [index, setIndex] = useState(0);
   const params = useParams();
 
-  
   const handleChange = (ind) => {
     setIndex(ind)
   }

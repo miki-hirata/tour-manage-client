@@ -1,9 +1,15 @@
 import React from 'react';
 import { useEffect, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { handleAddPlace, postPlace } from "../../apis";
 
-import { MainArea, StyledCard, CardInner} from "../../components";
+import { useForm, Controller } from "react-hook-form";
+import { handleAddPlace, postPlace, getPlaceCats } from "../../apis";
+
+import { MainArea, StyledCard, CardInner, AddUl } from "../../components";
+
+import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
+import Button from '@mui/material/Button';
+import MobileDatePicker from '@mui/lab/MobileDatePicker';
 
 class AutoAddress extends React.Component {
   constructor(props) {
@@ -44,39 +50,56 @@ class AutoAddress extends React.Component {
   render() {
     return(
       <>
-        <input
-          name="postalCodeH"
-          size="3"
-          maxLength="3"
-          onChange={e => this.handleChange(e)}
-        />
-        -
-        <input
-          name="postalCodeF"
-          size="4"
-          maxLength="4"
-          onChange={e => this.handleChange(e)}
-          onKeyUp={this.complementAddress}
-          onBlur={this.onBlurZipcode}
-        />
-        <input
+        <li className='postal_code'>
+          <p>郵便番号を入力</p>
+          <input
+            name="postalCodeH"
+            size="3"
+            maxLength="3"
+            onChange={e => this.handleChange(e)}
+          />
+          -
+          <input
+            name="postalCodeF"
+            size="4"
+            maxLength="4"
+            onChange={e => this.handleChange(e)}
+            onKeyUp={this.complementAddress}
+            onBlur={this.onBlurZipcode}
+          />
+        </li>
+        <li>
+          <TextField 
+            fullWidth
+            variant="standard"
+            placeholder="都道府県"
             name="prefecture"
             id="prefecture"
-            placeholder="都道府県"
+            {...this.props.register("prefecture")}
+            //わたせない！！！
             onChange={e => this.handleChange(e)}
-        />
-        <input
+          />
+        </li>
+        <li>
+          <TextField 
+            fullWidth
+            variant="standard"
             name="city"
             id="city"
             placeholder="市町村"
             onChange={e => this.handleChange(e)}
-        />
-        <input
+          />
+        </li>
+        <li>
+          <TextField 
+            fullWidth
+            variant="standard"
             name="street"
             id="street"
             placeholder="番地"
             onChange={e => this.handleChange(e)}
-        />
+          />
+        </li>
       </>
     )  
   }
@@ -85,11 +108,24 @@ export default AutoAddress;
 
 export function PlaceAddPage({ setHdTitle }) {
   
+  const [placeCats, setPlaceCats] = useState(null);
   const { register, handleSubmit, formState: { errors }, control, setValue } = useForm();
   const onSubmit = data => { 
     console.log(data);
-    postPlace(data, 'add');
+    //postPlace(data, 'add');
   }
+
+  useEffect(() => {
+    let unmounted = false;//メモリリーク防止
+    getPlaceCats().then((data) =>{ 
+      if (!unmounted) {
+        setPlaceCats(data);
+      }
+    });
+    return () => {
+      unmounted = true;
+    };
+  }, []);
 
   return (
     <MainArea>
@@ -97,47 +133,93 @@ export function PlaceAddPage({ setHdTitle }) {
         variant="outlined"
         >
         <CardInner>
-      <form onSubmit={handleAddPlace} className="h-adr">
-        
-        <dl>
-          <dt>会場名</dt>
-          <dd>
-            <input type="text" placeholder="name" {...register("name", {required: true, maxLength: 40})} />
-            { errors.name && <span className="text-danger">必須・40文字以下</span> }
-          </dd>
-        </dl>
-        <div className="head_main">
-            <input type="text" name="name" placeholder="会場名" className="name_large"/>
-          </div>
-          <div className="detail">
-            <div className="memo">
-              <textarea type="text" name="memo" placeholder="メモ"/>
-            </div>
-            <div className="country">
-              <textarea type="text" name="country" placeholder="国"/>
-            </div>
-            <div className="postalCode">
-              <textarea type="text" name="postalCode" placeholder="郵便番号"/>
-            </div>
-            <div className="prefecture">
-              <textarea type="text" name="prefecture" placeholder="都道府県"/>
-            </div>
-            <div className="city">
-              <textarea type="text" name="city" placeholder="市町村"/>
-            </div>
-            <div className="street">
-              <textarea type="text" name="street" placeholder="番地"/>
-            </div>
-            <div className="tel">
-              <textarea type="text" name="tel" placeholder="TEL"/>
-            </div>
-            <div className="fax">
-              <textarea type="text" name="fax" placeholder="FAX"/>
-            </div>
-          </div>
-          <AutoAddress />
-          <button type="submit">追加</button>
-      </form>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <AddUl>
+              <li>
+                <TextField
+                  label="会場名"
+                  fullWidth
+                  variant="standard"
+                  {...register("name", { required: true })}
+                  error={Boolean(errors.name)}
+                  helperText={errors.name && errors.name.message}
+                />
+              </li>
+              <li>
+                <TextField
+                  label="TEL"
+                  fullWidth
+                  variant="standard"
+                  {...register("tel")}
+                  error={Boolean(errors.memo)}
+                  helperText={errors.memo && errors.memo.message}
+                />
+              </li>
+              <li>
+                <TextField
+                  label="FAX"
+                  fullWidth
+                  variant="standard"
+                  {...register("fax")}
+                  error={Boolean(errors.memo)}
+                  helperText={errors.memo && errors.memo.message}
+                />
+              </li>
+              <li>
+                <TextField
+                  label="メモ"
+                  fullWidth
+                  variant="standard"
+                  {...register("memo")}
+                  error={Boolean(errors.memo)}
+                  helperText={errors.memo && errors.memo.message}
+                />
+              </li>
+              <li>
+                <Controller
+                  name="PlaceCatId"
+                  control={control}
+                  defaultValue="1"
+                  rules={{ required: "required!" }}
+                  variant="standard"
+                  render={({field}) => {
+                    return (
+                    <TextField
+                      select
+                      label="カテゴリー"
+                      fullWidth
+                      id="select"
+                      variant="standard"
+                      error={Boolean(errors.PlaceCatId)}
+                      helperText={errors.PlaceCatId && errors.PlaceCatId.message}
+                    >
+                      {placeCats && placeCats.map((placeCat) => (
+                        <MenuItem value={placeCat.id} key={placeCat.id}>
+                          {placeCat.name}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                    )
+                  }}
+                />
+              </li>
+              <li>
+                <TextField
+                  label="国"
+                  fullWidth
+                  variant="standard"
+                  defaultValue="日本"
+                  {...register("country")}
+                  error={Boolean(errors.country)}
+                  helperText={errors.country && errors.country.message}
+                />
+              </li>
+              <AutoAddress register={register}/>
+              <Button type="submit" variant="contained" color="primary" className='submit_button'>
+                新規登録
+              </Button>
+            </AddUl>
+          </form>
         </CardInner>
       </StyledCard>
     </MainArea>

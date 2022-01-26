@@ -16,7 +16,7 @@ export function RootPage({ setHdTitle }) {
   }
   
   useEffect(() => {
-    setHdTitle('TOP')
+    setHdTitle('トップページ')
   }, []);
   
   return (

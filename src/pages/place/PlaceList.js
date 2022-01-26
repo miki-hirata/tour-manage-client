@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useLocation, Link } from "react-router-dom";
-import { Breadcrumb, Loading, MainArea, SearchPlace } from "../../components";
+import { useLocation } from "react-router-dom";
+import { Loading, MainArea, PlaceList } from "../../components";
 import { getPlaces } from "../../apis";
 
 export function PlaceListPage({ setHdTitle }) {
@@ -29,9 +29,9 @@ export function PlaceListPage({ setHdTitle }) {
         <Loading />
       ) : (
         <MainArea>
-          <SearchPlace 
-            places={places}
-          />
+          {places.map((place) => {
+            return <PlaceList key={place.id} place={place} />;
+          })}
         </MainArea>
       )}
     </>

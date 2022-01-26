@@ -1,6 +1,7 @@
 import { format } from 'date-fns';
 import ja from 'date-fns/locale/ja'
 import styled from "styled-components";
+import {  pc, sp, tab, mixinMaxWidth } from '../setting';
 
 export function FormatDate({ date }) {
   let formatYear = format(new Date(date), 'yyyy');
@@ -31,6 +32,10 @@ margin-top: 4px;
   text-align: center;
   > .day {
     font-size: 28px;
+    
+    ${sp`
+      font-size: 20px;
+    `}
     font-weight: bold;
   }
   > .week {
