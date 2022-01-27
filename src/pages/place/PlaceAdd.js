@@ -167,8 +167,8 @@ export function PlaceAddPage({ }) {
                   }}
                   variant="standard"
                   {...register("tel")}
-                  error={Boolean(errors.memo)}
-                  helperText={errors.memo && errors.memo.message}
+                  error={Boolean(errors.fax)}
+                  helperText={errors.fax && errors.fax.message}
                 />
                 <TextField
                   label="FAX"
@@ -183,8 +183,8 @@ export function PlaceAddPage({ }) {
                     ),
                   }}
                   {...register("fax")}
-                  error={Boolean(errors.memo)}
-                  helperText={errors.memo && errors.memo.message}
+                  error={Boolean(errors.fax)}
+                  helperText={errors.fax && errors.fax.message}
                 />
               </li>
               <li>

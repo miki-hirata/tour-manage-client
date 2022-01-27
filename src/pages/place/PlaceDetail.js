@@ -3,7 +3,7 @@ import { useLocation, useParams, Link } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 
 import { MainArea, Loading, EventList, PlaceMemoList, FormatUpdate, TabArea, StyledTabs, 
-  StyledTab, StyledCard, CardInner, StyledEditButton, AddUl } from "../../components";
+  StyledTab, StyledCard, CardInner, StyledEditButton, StyledDeleteButton, AddUl } from "../../components";
 import { getPlace, getPlaceEvents, getPlaceMemos, postPlace, getPlaceCats, handleDeletePlace, handleEditPlace } from "../../apis";
 import SwipeableViews from 'react-swipeable-views';
 import styled from "styled-components";
@@ -35,18 +35,18 @@ function PlaceDeleteButton({ place }) {
 function PlaceDetail({ place }) {
   
   //編集モードかどうかによる出し分け(独立コンポーネントにするとエラー)
-  /* const [edit, setEdit] = useState(false);
+  const [edit, setEdit] = useState(false);
   const toggleEdit = () => setEdit(!edit);
   function EditButton() {
     if(edit){
       return <button type="submit" onClick={toggleEdit}>更新</button>
     } else {
       return (
-        <StyledEditButton toggleEdit={toggleEdit}/>
+        {/* <StyledEditButton toggleEdit={toggleEdit}/> */}
       );
     }
   }
-   */
+  
   
   useEffect(() => {
     let unmounted = false;//メモリリーク防止
@@ -85,7 +85,7 @@ function PlaceDetail({ place }) {
               e.preventDefault();
               handleEditPlace();
             }}
-          >       
+          >
             <AddUl>
               <li>
                 <TextField
@@ -136,8 +136,8 @@ function PlaceDetail({ place }) {
                   }}
                   variant="standard"
                   {...register("tel")}
-                  error={Boolean(errors.memo)}
-                  helperText={errors.memo && errors.memo.message}
+                  error={Boolean(errors.tel)}
+                  helperText={errors.tel && errors.tel.message}
                 />
                 <TextField
                   label="FAX"
@@ -153,8 +153,8 @@ function PlaceDetail({ place }) {
                     ),
                   }}
                   {...register("fax")}
-                  error={Boolean(errors.memo)}
-                  helperText={errors.memo && errors.memo.message}
+                  error={Boolean(errors.fax)}
+                  helperText={errors.fax && errors.fax.message}
                 />
               </li>
               <li>
@@ -205,9 +205,23 @@ function PlaceDetail({ place }) {
                   error={Boolean(errors.country)}
                   helperText={errors.country && errors.country.message}
                 />
-              </li>
-              <li>
-                {/* <AutoAddress register={register}/> */}
+                <TextField
+                  label="郵便番号"
+                  margin="normal"
+                  className="three"
+                  defaultValue={place.postalCode}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <CallIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                  variant="standard"
+                  {...register("postalCode")}
+                  error={Boolean(errors.postalCode)}
+                  helperText={errors.postalCode&& errors.postalCode.message}
+                />
               </li>
               <li>
                 <TextField
@@ -253,6 +267,7 @@ function PlaceDetail({ place }) {
                   id="street"
                   label="番地"
                   margin="normal"
+                  defaultValue={place.street}
                   className="three"
                   InputProps={{
                     startAdornment: (
@@ -267,18 +282,24 @@ function PlaceDetail({ place }) {
                   helperText={errors.street && errors.street.message}
                 />
               </li>
-              <Button type="submit" variant="contained" color="primary" className='submit_button'>
-                情報変更
+              <Button 
+                type="submit" 
+                variant="contained"
+                color="primary" 
+                className='submit_button'
+                onClick={toggleEdit}
+               >
+                更新
               </Button>
             </AddUl>
             <input type="hidden" name="id" value={place.id}/>
               {/* <EditButton /> */}
           </form>
-
-          </CardInner>
-        </StyledCard>
-      <FormatUpdate updateAt={place.updatedAt}/>
-      <PlaceDeleteButton place={place}/>
+          <StyledDeleteButton handleDelete={handleDeletePlace} id={place.id}/>
+          <FormatUpdate updateAt={place.updatedAt}/>
+        </CardInner>
+      </StyledCard>
+      {/* <PlaceDeleteButton place={place}/> */}
     </>
   );
 }
@@ -344,20 +365,36 @@ export function PlaceDetailPage({ setHdTitle }) {
             <MainArea>
               <PlaceDetail place = {place}/>
             </MainArea>
-            {events &&
-              <MainArea>
-              {events.map((event) => {
-                return <EventList key={event.id} event={event} />;
-              })}
-              </MainArea>
-            }
-            {placeMemos &&
-              <MainArea>
+            <MainArea>
+              {events ? (
+                <StyledCard
+                  variant="outlined"
+                >
+                  <CardInner>
+                    <p>この会場での公演履歴はありません</p>
+                  </CardInner>
+                </StyledCard>
+              ):(<>
+                {events.map((event) => {
+                  return <EventList key={event.id} event={event} />;
+                })}
+              </>)}
+            </MainArea>
+            <MainArea>
+              {placeMemos ? (
+                <StyledCard
+                  variant="outlined"
+                >
+                  <CardInner>
+                    <p>この会場についてのメモはありません</p>
+                  </CardInner>
+                </StyledCard>
+              ):(<>
                 {placeMemos.map((placeMemo) => {
                   return <PlaceMemoList key={placeMemo.id} placeMemo={placeMemo} />;
                 })}
-              </MainArea>
-            }
+              </>)}
+            </MainArea>
           </SwipeableViews> 
         </>
       )}

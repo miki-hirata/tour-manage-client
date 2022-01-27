@@ -11,6 +11,7 @@ export const StyledCard = styled(Card)`
 
 export const CardInner = styled.div`
   padding: 16px 16px 20px;
+  position: relative;
 
   dl{
     display: flex;

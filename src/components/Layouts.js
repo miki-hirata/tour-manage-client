@@ -27,21 +27,10 @@ ${mixinMaxWidth}
 
 export const AddUl = styled.ul`
 
-li{
-  margin-top: 1em;
-  display: flex;
-  margin-left: -1em;
-  margin-right: -1em;
-  .postal_code, .MuiFormControl-root, .MuiInputLabel-root{
-    padding: 0 1em;
-  }
-}
-
 ${pc`
     padding-left: 40px;
     padding-right: 40px;
     li{
-      margin-top: 1em;
       display: flex;
       margin-left: -1em;
       margin-right: -1em;
@@ -54,6 +43,15 @@ ${pc`
 ${tab`
     padding-left: 30px;
     padding-right: 30px;
+    li{
+      display: flex;
+      flex-wrap: wrap;
+      margin-left: -1em;
+      margin-right: -1em;
+      .postal_code, .MuiFormControl-root, .MuiInputLabel-root{
+        padding: 0 1em;
+      }
+    }
 `}
 ${sp`
     padding-left: 0;
