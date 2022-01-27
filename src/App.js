@@ -5,7 +5,8 @@ import { AddPage } from "./pages/Add.js";
 import { EventDetailPage } from "./pages/event";
 import { PlaceDetailPage } from "./pages/place";
 import { TourDetailPage, TourEventDetailPage } from "./pages/tour";
-import { pc, sp, tab, shadow, mixinMaxWidth } from './setting';
+import { pc, sp, tab, theme, mixinMaxWidth } from './setting';
+import { ThemeProvider } from '@material-ui/core';
 import styled from "styled-components";
 import Fab from '@mui/material/Fab';
 import HomeIcon from '@mui/icons-material/Home';
@@ -19,11 +20,11 @@ function Header({ title }) {
         <div className="title_area">
           
           <Link
-              className="main_title"
+              className="logo"
               to={`/`}
-            ><img src={LogoPC} alt="tour m." />
+            ><img src={LogoPC} alt="tour m." width="200" height="60" />
           </Link>
-          <div className="page_title">
+          <div className="title">
             <h1>{title}</h1>
           </div>
         </div>
@@ -67,34 +68,36 @@ export default function App() {
   const [hdTitle, setHdTitle] = useState('Tour Man');
 
   return (
-    <Wrapper>
-      <Router>
-        {/* <Navi naviOpen={naviOpen}/> */}
-        <Header title={hdTitle}/>
-        <Switch>
-          <Route path="/" exact>
-            <RootPage setHdTitle={setHdTitle} />
-          </Route>
-          <Route path="/add" exact>
-            <AddPage setHdTitle={setHdTitle} />
-          </Route>
-          <Route path="/tours/events/:tourId" exact>
-            <TourEventDetailPage setHdTitle={setHdTitle} />
-          </Route>
-          <Route path="/tours/:tourId" exact>
-            <TourDetailPage setHdTitle={setHdTitle} />
-          </Route>
-          <Route path="/events/:eventId">
-            <EventDetailPage setHdTitle={setHdTitle} />
-          </Route>
-          <Route path="/places/:placeId" exact>
-            <PlaceDetailPage setHdTitle={setHdTitle} />
-          </Route>
-        </Switch>
-        <HomeButton/>
-        <AddButton/>
-      </Router>
-    </Wrapper>
+    <ThemeProvider theme={theme}>
+      <Wrapper>
+        <Router>
+          {/* <Navi naviOpen={naviOpen}/> */}
+          <Header title={hdTitle}/>
+          <Switch>
+            <Route path="/" exact>
+              <RootPage setHdTitle={setHdTitle} />
+            </Route>
+            <Route path="/add" exact>
+              <AddPage setHdTitle={setHdTitle} />
+            </Route>
+            <Route path="/tours/events/:tourId" exact>
+              <TourEventDetailPage setHdTitle={setHdTitle} />
+            </Route>
+            <Route path="/tours/:tourId" exact>
+              <TourDetailPage setHdTitle={setHdTitle} />
+            </Route>
+            <Route path="/events/:eventId">
+              <EventDetailPage setHdTitle={setHdTitle} />
+            </Route>
+            <Route path="/places/:placeId" exact>
+              <PlaceDetailPage setHdTitle={setHdTitle} />
+            </Route>
+          </Switch>
+          <HomeButton/>
+          <AddButton/>
+        </Router>
+      </Wrapper>
+    </ThemeProvider>
   );
 }
 
@@ -104,11 +107,13 @@ background-color: #fff;
 position: sticky;
 top: 0;
 width: 100%;
-padding-bottom: 6px;
+padding: 8px 0;
 z-index: 1000;
 
 >.inner{
   ${mixinMaxWidth}
+  display: flex;
+  align-items: center;
   ${pc`
     height: 60px;
   `}
@@ -118,29 +123,41 @@ z-index: 1000;
   ${sp`
     height: 40px;
   `}
-  display: flex;
-  align-items: flex-end;
 }
 
 .title_area{
   display: flex;
-  overflow: hidden;
-  ${pc`
-    font-size: 24px;
-  `}
-  ${tab`
-    font-size: 20px;
-  `}
-  ${sp`
-    font-size: 16px;
-  `}
-
-  .main_title{
-    font-weight: bold;
+  height: 100%;
+  .logo{
     margin-right: 1.5em;
+    height: 100%;
+    ${sp`
+      margin-right: 0.5em;
+    `}
+    img{
+      height: 100%;
+      width: auto;
+    }
   }
-  .head_title{
+  .title{
+    font-weight: bold;
     letter-spacing: 0.2em;
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 4px;
+    overflow-x: hidden;
+    ${pc`
+      font-size: 24px;
+    `}
+    ${tab`
+      font-size: 20px;
+    `}
+    ${sp`
+      font-size: 14px;
+    `}
+    h1{
+      white-space: nowrap;
+    }
   }
 }
 `;

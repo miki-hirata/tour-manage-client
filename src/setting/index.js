@@ -1,4 +1,5 @@
 export * from "./styledCompnents.js";
+export * from "./muiTheme.js";
 
 
 //画面幅での要素出し分け

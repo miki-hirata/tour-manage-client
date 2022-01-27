@@ -17,4 +17,9 @@ justify-content: center; */
 
 
 export const StyledTab = styled(Tab)`
+  
+  ${sp`
+    min-width: 70px !important;
+    padding: 14px 6px !important;
+  `}
 `;
