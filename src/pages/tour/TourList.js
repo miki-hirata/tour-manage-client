@@ -11,8 +11,6 @@ export function TourListPage({ setHdTitle }) {
   const perPage = 5;
   const page = +query.get("page") || 1;
 
-  
-
   useEffect(() => {
     getTours({
       limit: perPage,

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLocation, useParams, Link } from "react-router-dom";
 import SwipeableViews from 'react-swipeable-views';
-import { MainArea, Loading, EventList, PlaceList, FormatUpdate, TabArea, StyledTabs, StyledTab,StyledCard, CardInner} from "../components";
-import { getPlaces, getPlaceEvents, getPlaceMemos, handleDeletePlace, handleEditPlace } from "../apis";
+import { TabArea, StyledTabs, StyledTab,StyledCard, CardInner} from "../components";
+import { AboutPage } from "./About.js";
 
 import { EventListPage, EventDetailPage, EventAddPage } from "./event";
 import { PlaceListPage, PlaceDetailPage, PlaceAddPage } from "./place";
@@ -27,6 +27,7 @@ export function RootPage({ setHdTitle }) {
           onChange={(e,value)=>handleChange(value)}
           indicatorColor="primary"
         >
+          <StyledTab label="紹介" />
           <StyledTab label="ツアー" />
           <StyledTab label="会場" />
           <StyledTab label="イベント" />
@@ -37,6 +38,7 @@ export function RootPage({ setHdTitle }) {
         index={index}
         onChangeIndex={(index) => handleChange(index)}
       >
+        <AboutPage/>
         <TourListPage/>
         <PlaceListPage/>
         <EventListPage/>

@@ -10,22 +10,25 @@ import styled from "styled-components";
 import Fab from '@mui/material/Fab';
 import HomeIcon from '@mui/icons-material/Home';
 import AddIcon from '@mui/icons-material/Add';
+import LogoPC from './img/tm_logo_pc.svg'
 
 function Header({ title }) {
   return (
     <HeaderStyle>
-      <div className="title_area">
-        
-        <Link
-            className="main_title"
-            to={`/`}
-          ><h1><span>Tour M.</span></h1>
-        </Link>
-        <div className="page_title">
-          <h1>{title}</h1>
+      <div className="inner">
+        <div className="title_area">
+          
+          <Link
+              className="main_title"
+              to={`/`}
+            ><img src={LogoPC} alt="tour m." />
+          </Link>
+          <div className="page_title">
+            <h1>{title}</h1>
+          </div>
         </div>
+        <div className="user_area"></div>
       </div>
-      <div className="user_area"></div>
     </HeaderStyle>
   );
 }
@@ -101,23 +104,25 @@ background-color: #fff;
 position: sticky;
 top: 0;
 width: 100%;
-display: flex;
-align-items: flex-end;
 padding-bottom: 6px;
 z-index: 1000;
-${mixinMaxWidth}
-${shadow}
 
-${pc`
-  height: 60px;
-`}
-${tab`
-  height: 50px;
-`}
-${sp`
-  height: 40px;
-`}
->.title_area{
+>.inner{
+  ${mixinMaxWidth}
+  ${pc`
+    height: 60px;
+  `}
+  ${tab`
+    height: 50px;
+  `}
+  ${sp`
+    height: 40px;
+  `}
+  display: flex;
+  align-items: flex-end;
+}
+
+.title_area{
   display: flex;
   overflow: hidden;
   ${pc`
@@ -129,7 +134,7 @@ ${sp`
   ${sp`
     font-size: 16px;
   `}
-  
+
   .main_title{
     font-weight: bold;
     margin-right: 1.5em;

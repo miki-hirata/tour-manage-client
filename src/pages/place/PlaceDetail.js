@@ -1,8 +1,25 @@
 import { useEffect, useState } from "react";
 import { useLocation, useParams, Link } from "react-router-dom";
-import { MainArea, Loading, EventList, PlaceMemoList, FormatUpdate, TabArea, StyledTabs, StyledTab, StyledCard, CardInner} from "../../components";
-import { getPlace, getPlaceEvents, getPlaceMemos, handleDeletePlace, handleEditPlace } from "../../apis";
+import { useForm, Controller } from "react-hook-form";
+
+import { MainArea, Loading, EventList, PlaceMemoList, FormatUpdate, TabArea, StyledTabs, 
+  StyledTab, StyledCard, CardInner, StyledEditButton, AddUl } from "../../components";
+import { getPlace, getPlaceEvents, getPlaceMemos, postPlace, getPlaceCats, handleDeletePlace, handleEditPlace } from "../../apis";
 import SwipeableViews from 'react-swipeable-views';
+import styled from "styled-components";
+
+import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
+import Button from '@mui/material/Button';
+import MobileDatePicker from '@mui/lab/MobileDatePicker';
+import InputAdornment from '@mui/material/InputAdornment';
+import CallIcon from '@mui/icons-material/Call';
+import FaxIcon from '@mui/icons-material/Fax';
+import NotesIcon from '@mui/icons-material/Notes';
+import PublicIcon from '@mui/icons-material/Public';
+import MapIcon from '@mui/icons-material/Map';
+import LocationCityIcon from '@mui/icons-material/LocationCity';
+import MapsHomeWorkIcon from '@mui/icons-material/MapsHomeWork';
 
 function PlaceDeleteButton({ place }) {
   return (
@@ -18,90 +35,248 @@ function PlaceDeleteButton({ place }) {
 function PlaceDetail({ place }) {
   
   //編集モードかどうかによる出し分け(独立コンポーネントにするとエラー)
-  const [edit, setEdit] = useState(false);
+  /* const [edit, setEdit] = useState(false);
   const toggleEdit = () => setEdit(!edit);
   function EditButton() {
     if(edit){
       return <button type="submit" onClick={toggleEdit}>更新</button>
     } else {
-      return <button onClick={toggleEdit}>編集</button>
+      return (
+        <StyledEditButton toggleEdit={toggleEdit}/>
+      );
     }
   }
+   */
+  
+  useEffect(() => {
+    let unmounted = false;//メモリリーク防止
+    getPlaceCats().then((data) =>{ 
+      if (!unmounted) {
+        setPlaceCats(data);
+      }
+    });
+    return () => {
+      unmounted = true;
+    };
+  }, []);
+
+  const [placeCats, setPlaceCats] = useState(null);
+  const { register, handleSubmit, formState: { errors }, control, setValue } = useForm();
+  
+  const onSubmit = data => { 
+    //県・市が一度クリックしないと読み込めない
+    //document.getElementById('prefecture').click();
+    let PostalCodeH = document.getElementById('postalCodeH').value;
+    let PostalCodeF = document.getElementById('postalCodeF').value;
+    data.postalCode = `${PostalCodeH}-${PostalCodeF}`;
+    //console.log(data);
+    postPlace(data, 'add');
+  }
+
 
   return (
     <>
-      <form 
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleEditPlace();
-        }}
-      >       
-        <StyledCard
-          variant="outlined"
-          >
-          <CardInner>
-            <dl>
-              <dt>名前</dt>
-              <dd><input type="text" name="name" defaultValue={place.name} disabled={!edit}/></dd>
-            </dl>
-            <dl>
-              <dt>カテゴリー</dt>
-              {place.PlaceCat ? <dd>{place.PlaceCat.name}</dd> : '未登録'}
-            </dl>
-            <dl>
-              <dt>ID</dt>
-              <dd>{place.id}</dd>
-            </dl>
-            <dl>
-              <dt>国</dt>
-              <dd>{place.country}</dd>
-            </dl>
-            <dl>
-              <dt>郵便番号</dt>
-              <dd>{place.postalCode}</dd>
-            </dl>
-            <dl>
-              <dt>都道府県</dt>
-              <dd>{place.prefecture}</dd>
-            </dl>
-            <dl>
-              <dt>市区町村</dt>
-              <dd>{place.city}</dd>
-            </dl>
-            <dl>
-              <dt>番地</dt>
-              <dd>{place.street}</dd>
-            </dl>
-            <dl>
-              <dt>TEL</dt>
-              <dd>{place.tel}</dd>
-            </dl>
-            <dl>
-              <dt>FAX</dt>
-              <dd>{place.fax}</dd>
-            </dl>
+      <StyledCard
+        variant="outlined"
+        >
+        <CardInner>
+          <form 
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleEditPlace();
+            }}
+          >       
+            <AddUl>
+              <li>
+                <TextField
+                  label="会場名"
+                  fullWidth
+                  defaultValue={place.name}
+                  //disabled={!edit}
+                  margin="normal"
+                  variant="standard"
+                  {...register("name", { required: true })}
+                  error={Boolean(errors.name)}
+                  helperText={errors.name && errors.name.message}
+                />
+              </li>
+              <li>
+                <TextField
+                  label="メモ"
+                  fullWidth
+                  margin="normal"
+                  defaultValue={place.memo}
+                  //multiline
+                  //rows={2}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <NotesIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                  variant="standard"
+                  {...register("memo")}
+                  error={Boolean(errors.memo)}
+                  helperText={errors.memo && errors.memo.message}
+                />
+              </li>
+              <li>
+                <TextField
+                  label="TEL"
+                  margin="normal"
+                  className="three"
+                  defaultValue={place.tel}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <CallIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                  variant="standard"
+                  {...register("tel")}
+                  error={Boolean(errors.memo)}
+                  helperText={errors.memo && errors.memo.message}
+                />
+                <TextField
+                  label="FAX"
+                  margin="normal"
+                  variant="standard"
+                  className="three"
+                  defaultValue={place.fax}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <FaxIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                  {...register("fax")}
+                  error={Boolean(errors.memo)}
+                  helperText={errors.memo && errors.memo.message}
+                />
+              </li>
+              <li>
+                <Controller
+                  name="PlaceCatId"
+                  control={control}
+                  defaultValue="1"
+                  rules={{ required: "required!" }}
+                  variant="standard"
+                  render={({field}) => {
+                    return (
+                    <TextField
+                      select
+                      label="カテゴリー"
+                      className="three"
+                      required
+                      margin="normal"
+                      defaultValue={place.PlaceCat}
+                      id="select"
+                      variant="standard"
+                      error={Boolean(errors.PlaceCatId)}
+                      helperText={errors.PlaceCatId && errors.PlaceCatId.message}
+                    >
+                      {placeCats && placeCats.map((placeCat) => (
+                        <MenuItem value={placeCat.id} key={placeCat.id}>
+                          {placeCat.name}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                    )
+                  }}
+                />
+                <TextField
+                  label="国"
+                  variant="standard"
+                  defaultValue="日本"
+                  margin="normal"
+                  className="three"
+                  defaultValue={place.country}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <PublicIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                  {...register("country")}
+                  error={Boolean(errors.country)}
+                  helperText={errors.country && errors.country.message}
+                />
+              </li>
+              <li>
+                {/* <AutoAddress register={register}/> */}
+              </li>
+              <li>
+                <TextField
+                  label="都道府県"
+                  name="prefecture"
+                  id="prefecture"
+                  margin="normal"
+                  className="three"
+                  defaultValue={place.prefecture}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <MapIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                  variant="standard"
+                  {...register("prefecture")}
+                  error={Boolean(errors.prefecture)}
+                  helperText={errors.prefecture && errors.prefecture.message}
+                />
+                <TextField
+                  name="city"
+                  id="city"
+                  label="市町村区"
+                  margin="normal"
+                  defaultValue={place.city}
+                  className="three"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <LocationCityIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                  variant="standard"
+                  {...register("city")}
+                  error={Boolean(errors.city)}
+                  helperText={errors.city && errors.city.message}
+                />
+                <TextField
+                  name="street"
+                  id="street"
+                  label="番地"
+                  margin="normal"
+                  className="three"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <MapsHomeWorkIcon  />
+                      </InputAdornment>
+                    ),
+                  }}
+                  variant="standard"
+                  {...register("street")}
+                  error={Boolean(errors.street)}
+                  helperText={errors.street && errors.street.message}
+                />
+              </li>
+              <Button type="submit" variant="contained" color="primary" className='submit_button'>
+                情報変更
+              </Button>
+            </AddUl>
+            <input type="hidden" name="id" value={place.id}/>
+              {/* <EditButton /> */}
+          </form>
 
           </CardInner>
         </StyledCard>
-        {/* <div className="card">
-          <div className="head_main">
-            <input type="text" name="name" defaultValue={place.name} className="name_large" disabled={!edit}/>
-          </div>
-        </div>
-        <div className="card">
-          <div>
-            <div className="num">
-              <span>ID</span>
-              <span>{place.id}</span>
-            </div>
-            <div className="memo">
-              <textarea type="text" name="memo" defaultValue={place.memo} disabled={!edit}/>
-            </div>
-          </div>
-        </div> */}
-        <input type="hidden" name="id" value={place.id}/>
-        <EditButton />
-      </form>
       <FormatUpdate updateAt={place.updatedAt}/>
       <PlaceDeleteButton place={place}/>
     </>
@@ -119,6 +294,7 @@ export function PlaceDetailPage({ setHdTitle }) {
   const handleChange = (ind) => {
     setIndex(ind)
   }
+
 
   useEffect(() => {
     let unmounted = false;//メモリリーク防止
@@ -156,8 +332,8 @@ export function PlaceDetailPage({ setHdTitle }) {
               indicatorColor="primary"
             >
               <StyledTab label="会場情報" />
-              {place.Events.length >= 1 && <StyledTab label="公演履歴" />}
-              {place.PlaceMemos.length >= 1 && <StyledTab label="メモ" />}
+              {events && <StyledTab label="公演履歴" />}
+              {placeMemos && <StyledTab label="メモ" />}
             </StyledTabs>
           </TabArea>
           <SwipeableViews
@@ -168,14 +344,14 @@ export function PlaceDetailPage({ setHdTitle }) {
             <MainArea>
               <PlaceDetail place = {place}/>
             </MainArea>
-            {place.Events.length >= 1 &&
+            {events &&
               <MainArea>
               {events.map((event) => {
                 return <EventList key={event.id} event={event} />;
               })}
               </MainArea>
             }
-            {place.PlaceMemos.length >= 1 &&
+            {placeMemos &&
               <MainArea>
                 {placeMemos.map((placeMemo) => {
                   return <PlaceMemoList key={placeMemo.id} placeMemo={placeMemo} />;

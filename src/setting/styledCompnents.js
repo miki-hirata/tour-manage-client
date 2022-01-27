@@ -34,14 +34,11 @@ export const mixinColor = css`
 
 
 
-export const shadow = css`
-  box-shadow: 2px 2px 4px -4px rgba(0,0,0,0.6);
-`;
-
 export const mixinMaxWidth = css`
   ${pc`
-      padding-left: 150px;
-      padding-right: 150px;
+      max-width: 950px;
+      margin-left: auto;
+      margin-right: auto;
   `}
   ${tab`
       padding-left: 30px;

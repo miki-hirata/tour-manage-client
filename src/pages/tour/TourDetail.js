@@ -97,7 +97,7 @@ export function TourDetailPage({ setHdTitle }) {
               onChange={(e,value)=>handleChange(value)}
               indicatorColor="primary"
             >
-              {events.length >= 1 && <StyledTab label="スケジュール" />}
+              {events && <StyledTab label="スケジュール" />}
               <StyledTab label="ツアー情報" />
             </StyledTabs>
           </TabArea>
@@ -106,7 +106,7 @@ export function TourDetailPage({ setHdTitle }) {
             index={index}
             onChangeIndex={(index) => handleChange(index)}
           >
-            {events.length >= 1 &&
+            {events &&
               <MainArea>
                 {events.map((event) => {
                   return <EventList key={event.id} event={event} tour={tour}/>;

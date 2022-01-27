@@ -10,6 +10,14 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
+import InputAdornment from '@mui/material/InputAdornment';
+import CallIcon from '@mui/icons-material/Call';
+import FaxIcon from '@mui/icons-material/Fax';
+import NotesIcon from '@mui/icons-material/Notes';
+import PublicIcon from '@mui/icons-material/Public';
+import MapIcon from '@mui/icons-material/Map';
+import LocationCityIcon from '@mui/icons-material/LocationCity';
+import MapsHomeWorkIcon from '@mui/icons-material/MapsHomeWork';
 
 class AutoAddress extends React.Component {
   constructor(props) {
@@ -46,74 +54,51 @@ class AutoAddress extends React.Component {
       }
     });
   };
+  
 
   render() {
     return(
-      <>
-        <li className='postal_code'>
-          <p>郵便番号を入力</p>
-          <input
-            name="postalCodeH"
-            size="3"
-            maxLength="3"
-            onChange={e => this.handleChange(e)}
-          />
-          -
-          <input
-            name="postalCodeF"
-            size="4"
-            maxLength="4"
-            onChange={e => this.handleChange(e)}
-            onKeyUp={this.complementAddress}
-            onBlur={this.onBlurZipcode}
-          />
-        </li>
-        <li>
-          <TextField 
-            fullWidth
-            variant="standard"
-            placeholder="都道府県"
-            name="prefecture"
-            id="prefecture"
-            {...this.props.register("prefecture")}
-            //わたせない！！！
-            onChange={e => this.handleChange(e)}
-          />
-        </li>
-        <li>
-          <TextField 
-            fullWidth
-            variant="standard"
-            name="city"
-            id="city"
-            placeholder="市町村"
-            onChange={e => this.handleChange(e)}
-          />
-        </li>
-        <li>
-          <TextField 
-            fullWidth
-            variant="standard"
-            name="street"
-            id="street"
-            placeholder="番地"
-            onChange={e => this.handleChange(e)}
-          />
-        </li>
-      </>
+      <div className='postal_code'>
+        <p>郵便番号を入力</p>
+        <input
+          id="postalCodeH"
+          name="postalCodeH"
+          size="3"
+          maxLength="3"
+          onChange={e => this.handleChange(e)}
+        />
+        -
+        <input
+          id="postalCodeF"
+          name="postalCodeF"
+          size="4"
+          maxLength="4"
+          onChange={e => this.handleChange(e)}
+          onKeyUp={this.complementAddress}
+          onBlur={this.onBlurZipcode}
+        />
+      </div>
     )  
   }
 }
 export default AutoAddress;
 
-export function PlaceAddPage({ setHdTitle }) {
+export function PlaceAddPage({ }) {
   
   const [placeCats, setPlaceCats] = useState(null);
   const { register, handleSubmit, formState: { errors }, control, setValue } = useForm();
+  
   const onSubmit = data => { 
-    console.log(data);
-    //postPlace(data, 'add');
+    //県・市が一度クリックしないと読み込めない
+    //document.getElementById('prefecture').click();
+    let PostalCodeH = document.getElementById('postalCodeH').value;
+    let PostalCodeF = document.getElementById('postalCodeF').value;
+    data.postalCode = `${PostalCodeH}-${PostalCodeF}`;
+    //console.log(data);
+    postPlace(data, 'add');
   }
+
+  
 
   useEffect(() => {
     let unmounted = false;//メモリリーク防止
@@ -127,6 +112,7 @@ export function PlaceAddPage({ setHdTitle }) {
     };
   }, []);
 
+
   return (
     <MainArea>
       <StyledCard
@@ -138,7 +124,9 @@ export function PlaceAddPage({ setHdTitle }) {
               <li>
                 <TextField
                   label="会場名"
+                  required
                   fullWidth
+                  margin="normal"
                   variant="standard"
                   {...register("name", { required: true })}
                   error={Boolean(errors.name)}
@@ -147,30 +135,54 @@ export function PlaceAddPage({ setHdTitle }) {
               </li>
               <li>
                 <TextField
-                  label="TEL"
+                  label="メモ"
                   fullWidth
+                  margin="normal"
+                  multiline
+                  rows={2}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <NotesIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                  variant="standard"
+                  {...register("memo")}
+                  error={Boolean(errors.memo)}
+                  helperText={errors.memo && errors.memo.message}
+                />
+              </li>
+              <li>
+                <TextField
+                  label="TEL"
+                  margin="normal"
+                  className="three"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <CallIcon />
+                      </InputAdornment>
+                    ),
+                  }}
                   variant="standard"
                   {...register("tel")}
                   error={Boolean(errors.memo)}
                   helperText={errors.memo && errors.memo.message}
                 />
-              </li>
-              <li>
                 <TextField
                   label="FAX"
-                  fullWidth
+                  margin="normal"
                   variant="standard"
+                  className="three"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <FaxIcon />
+                      </InputAdornment>
+                    ),
+                  }}
                   {...register("fax")}
-                  error={Boolean(errors.memo)}
-                  helperText={errors.memo && errors.memo.message}
-                />
-              </li>
-              <li>
-                <TextField
-                  label="メモ"
-                  fullWidth
-                  variant="standard"
-                  {...register("memo")}
                   error={Boolean(errors.memo)}
                   helperText={errors.memo && errors.memo.message}
                 />
@@ -187,7 +199,10 @@ export function PlaceAddPage({ setHdTitle }) {
                     <TextField
                       select
                       label="カテゴリー"
-                      fullWidth
+                      className="three"
+                      required
+                      margin="normal"
+                      defaultValue="1"
                       id="select"
                       variant="standard"
                       error={Boolean(errors.PlaceCatId)}
@@ -202,19 +217,83 @@ export function PlaceAddPage({ setHdTitle }) {
                     )
                   }}
                 />
-              </li>
-              <li>
                 <TextField
                   label="国"
-                  fullWidth
                   variant="standard"
                   defaultValue="日本"
+                  margin="normal"
+                  className="three"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <PublicIcon />
+                      </InputAdornment>
+                    ),
+                  }}
                   {...register("country")}
                   error={Boolean(errors.country)}
                   helperText={errors.country && errors.country.message}
                 />
               </li>
-              <AutoAddress register={register}/>
+              <li>
+                <AutoAddress register={register}/>
+              </li>
+              <li>
+                <TextField
+                  label="都道府県"
+                  name="prefecture"
+                  id="prefecture"
+                  margin="normal"
+                  className="three"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <MapIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                  variant="standard"
+                  {...register("prefecture")}
+                  error={Boolean(errors.prefecture)}
+                  helperText={errors.prefecture && errors.prefecture.message}
+                />
+                <TextField
+                  name="city"
+                  id="city"
+                  label="市町村区"
+                  margin="normal"
+                  className="three"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <LocationCityIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                  variant="standard"
+                  {...register("city")}
+                  error={Boolean(errors.city)}
+                  helperText={errors.city && errors.city.message}
+                />
+                <TextField
+                  name="street"
+                  id="street"
+                  label="番地"
+                  margin="normal"
+                  className="three"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <MapsHomeWorkIcon  />
+                      </InputAdornment>
+                    ),
+                  }}
+                  variant="standard"
+                  {...register("street")}
+                  error={Boolean(errors.street)}
+                  helperText={errors.street && errors.street.message}
+                />
+              </li>
               <Button type="submit" variant="contained" color="primary" className='submit_button'>
                 新規登録
               </Button>
