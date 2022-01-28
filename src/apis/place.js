@@ -28,30 +28,6 @@ export async function postPlace(place, type){
   });
 }
 
-export async function handleAddPlace(content) {
-  const place = {
-    "name": content.target.elements.name.value,
-    "memo": content.target.elements.memo.value,
-    "country": content.target.elements.country.value,
-    "postalCode": content.target.elements.postalCodeH.value + '-' + content.target.elements.postalCodeF.value,
-    "prefecture": content.target.elements.prefecture.value,
-    "city": content.target.elements.city.value,
-    "street": content.target.elements.street.value,
-    "tel": content.target.elements.tel.value,
-    "fax": content.target.elements.fax.value
-  };
-  await postPlace(place, 'add')
-}
-
-export async function handleEditPlace(content) {
-  const place = {
-    "id": content.target.elements.id.value,
-    "name": content.target.elements.name.value,
-    "memo": content.target.elements.memo.value
-  };
-  await postPlace(place, 'edit');
-}
-
 export async function handleDeletePlace(content) {
   const place = {
     "id": content.target.elements.id.value,

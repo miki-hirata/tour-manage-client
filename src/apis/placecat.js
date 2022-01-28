@@ -27,16 +27,6 @@ export async function postEvent(event, type){
   });
 }
 
-export async function handleEditEvent(content) {
-  const event = {
-    "id": content.target.elements.id.value,
-    "name": content.target.elements.name.value,
-    "date": content.target.elements.date.value,
-    "placeId": content.target.elements.placeId.value,
-    "memo": content.target.elements.memo.value
-  };
-  await postEvent(event, 'edit');
-}
 
 export async function handleDeleteEvent(content) {
   const event = {

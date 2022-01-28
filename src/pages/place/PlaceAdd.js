@@ -206,36 +206,7 @@ export function PlaceAddPage({ }) {
                     {placeCat.name}
                   </MenuItem>
                 ))}
-                </TextField>{/* 
-                <Controller
-                  name="PlaceCatId"
-                  control={control}
-                  defaultValue="1"
-                  rules={{ required: "required!" }}
-                  variant="standard"
-                  render={({field}) => {
-                    return (
-                    <TextField
-                      select
-                      label="カテゴリー"
-                      className="three"
-                      required
-                      margin="normal"
-                      defaultValue="1"
-                      id="select"
-                      variant="standard"
-                      error={Boolean(errors.PlaceCatId)}
-                      helperText={errors.PlaceCatId && errors.PlaceCatId.message}
-                    >
-                      {placeCats && placeCats.map((placeCat) => (
-                        <MenuItem value={placeCat.id} key={placeCat.id}>
-                          {placeCat.name}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                    )
-                  }}
-                /> */}
+                </TextField>
                 <TextField
                   label="国"
                   variant="standard"

@@ -25,27 +25,6 @@ export async function postTour(tour, type){
   });
 }
 
-export async function handleAddTour(content) {
-  const tour = {
-    "name": content.target.elements.name.value,
-    "date": content.target.elements.date.value,
-    "placeId": content.target.elements.placeId.value,
-    "memo": content.target.elements.memo.value
-  };
-  await postTour(tour, 'add');
-}
-
-export async function handleEditTour(content) {
-  const tour = {
-    "id": content.target.elements.id.value,
-    "name": content.target.elements.name.value,
-    "date": content.target.elements.date.value,
-    "placeId": content.target.elements.placeId.value,
-    "memo": content.target.elements.memo.value
-  };
-  await postTour(tour, 'edit');
-}
-
 export async function handleDeleteTour(content) {
   const tour = {
     "id": content.target.elements.id.value,

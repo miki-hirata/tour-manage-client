@@ -1,7 +1,24 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import { Loading, MainArea, PlaceList } from "../../components";
+import { useLocation, Link } from "react-router-dom";
+import { Loading, MainArea, StyledCard, CardInnerHead, HeadMainFont } from "../../components";
 import { getPlaces } from "../../apis";
+
+function PlaceList({ place }) {
+  return (
+    <StyledCard>
+      <Link
+        key={place.id}
+        className="card link"
+        to={`/places/${place.id}`}
+      >
+        <CardInnerHead>
+          <HeadMainFont>{place.name}</HeadMainFont>
+        </CardInnerHead>
+      </Link>
+    </StyledCard>
+  );
+}
+
 
 export function PlaceListPage({ setHdTitle }) {
   const [places, setPlaces] = useState(null);
@@ -10,8 +27,6 @@ export function PlaceListPage({ setHdTitle }) {
   const query = new URLSearchParams(location.search);
   const perPage = 5;
   const page = +query.get("page") || 1;
-
-  
   
   useEffect(() => {
     getPlaces({

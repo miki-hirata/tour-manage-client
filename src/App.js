@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 import { RootPage } from "./pages/Root.js";
 import { AddPage } from "./pages/Add.js";
 import { EventDetailPage } from "./pages/event";
-import { PlaceDetailPage } from "./pages/place";
-import { TourDetailPage, TourEventDetailPage } from "./pages/tour";
+import { PlacePage } from "./pages/place";
+import { TourPage, TourEventDetailPage } from "./pages/tour";
 import { pc, sp, tab, theme, mixinMaxWidth } from './setting';
 import { ThemeProvider } from '@material-ui/core';
 import styled from "styled-components";
@@ -84,13 +84,13 @@ export default function App() {
               <TourEventDetailPage setHdTitle={setHdTitle} />
             </Route>
             <Route path="/tours/:tourId" exact>
-              <TourDetailPage setHdTitle={setHdTitle} />
+              <TourPage setHdTitle={setHdTitle} />
             </Route>
             <Route path="/events/:eventId">
               <EventDetailPage setHdTitle={setHdTitle} />
             </Route>
             <Route path="/places/:placeId" exact>
-              <PlaceDetailPage setHdTitle={setHdTitle} />
+              <PlacePage setHdTitle={setHdTitle} />
             </Route>
           </Switch>
           <HomeButton/>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { MainArea, Loading, EventDetail, TabArea, StyledTabs, StyledTab } from "../../components";
-import { getTour, getTourEvents, getEventSches } from "../../apis";
+import { getTour, getTourEvents } from "../../apis";
 import { format } from 'date-fns';
 import SwipeableViews from 'react-swipeable-views';
 

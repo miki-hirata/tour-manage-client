@@ -1,7 +1,22 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import { Loading, MainArea, TourList } from "../../components";
+import { useLocation, Link } from "react-router-dom";
+import { Loading, MainArea,  StyledCard, CardInnerHead, HeadMainFont } from "../../components";
 import { getTours } from "../../apis";
+
+function TourList({ tour }) {
+  return (    
+    <StyledCard>
+      <Link
+        key={tour.id}
+        to={`/tours/${tour.id}`}
+      >
+        <CardInnerHead>
+          <HeadMainFont>{tour.name}</HeadMainFont>
+        </CardInnerHead>
+      </Link>
+    </StyledCard>
+  );
+}
 
 export function TourListPage({ setHdTitle }) {
   const [tours, setTours] = useState(null);

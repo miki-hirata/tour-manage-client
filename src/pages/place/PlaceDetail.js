@@ -2,11 +2,8 @@ import { useEffect, useState } from "react";
 import { useLocation, useParams, Link } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 
-import { MainArea, Loading, EventList, PlaceMemoList, FormatUpdate, TabArea, StyledTabs, 
-  StyledTab, StyledCard, CardInner, StyledEditButton, StyledDeleteButton, AddUl } from "../../components";
-import { getPlace, getPlaceEvents, getPlaceMemos, postPlace, getPlaceCats, handleDeletePlace, handleEditPlace } from "../../apis";
-import SwipeableViews from 'react-swipeable-views';
-import styled from "styled-components";
+import { MainArea, Loading, FormatUpdate, StyledCard, CardInner, StyledDeleteButton, AddUl } from "../../components";
+import { getPlace, postPlace, getPlaceCats } from "../../apis";
 
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
@@ -22,10 +19,12 @@ import LocationCityIcon from '@mui/icons-material/LocationCity';
 import MapsHomeWorkIcon from '@mui/icons-material/MapsHomeWork';
 
 
-function PlaceDetail({ place, removed, setRemoved }) {
+export function PlaceDetailPage({ place }) {
+  
   const [placeCats, setPlaceCats] = useState(null);
   const { register, handleSubmit, formState: { errors }, control, setValue } = useForm();
-  
+  const params = useParams();
+
   const onSubmit = data => { 
     data.id = place.id;
     console.log(data);
@@ -42,16 +41,16 @@ function PlaceDetail({ place, removed, setRemoved }) {
     return () => {
       unmounted = true;
     };
-  }, []);
+  }, [params.placeId]);
 
-  const onDelete = data => { 
+  /* const onDelete = data => { 
     data.removed = true;
     setRemoved(true);
     postPlace(data, 'edit');
   }
-
+ */
   return (
-    <>
+    <MainArea>
       <StyledCard
         variant="outlined"
         >
@@ -248,114 +247,14 @@ function PlaceDetail({ place, removed, setRemoved }) {
                 更新
               </Button>
             </AddUl>
-             {/* <EditButton /> */}
+            {/* <EditButton /> */}
           </form>
-          <StyledDeleteButton handleSubmit={handleSubmit} onDelete={onDelete} />{/* 作成中 */}
+          {/* <StyledDeleteButton handleSubmit={handleSubmit} onDelete={onDelete} />作成中 */}
           <FormatUpdate updateAt={place.updatedAt}/>
         </CardInner>
       </StyledCard>
       {/* <PlaceDeleteButton place={place}/> */}
-    </>
+    </MainArea>
   );
 }
 
-
-export function PlaceDetailPage({ setHdTitle }) {
-  const [place, setPlace] = useState(null);
-  const [events, setEvents] = useState(null);
-  const [placeMemos, setPlaceMemos] = useState(null);
-  const [removed, setRemoved] = useState(false);
-  const [index, setIndex] = useState(0);
-  const params = useParams();
-
-  const handleChange = (ind) => {
-    setIndex(ind)
-  }
-
-
-  useEffect(() => {
-    let unmounted = false;//メモリリーク防止
-    getPlaceEvents(params.placeId).then((data) => {
-      if (!unmounted) {
-        setEvents(data);
-      }
-    });
-    getPlaceMemos(params.placeId).then((data) => {
-      if (!unmounted) {
-        setPlaceMemos(data);
-      }
-    });
-    getPlace(params.placeId).then((data) => {
-      if (!unmounted) {
-        setPlace(data);
-        setHdTitle(data.name)
-        setRemoved(data.removed);
-        console.log(data);
-      }
-    });
-    return () => {
-      unmounted = true;
-    };
-  }, [params.placeId]);
-  
-  return (
-    <>
-      {place == null ? (
-        <Loading />
-      ) : (
-        <>
-          <TabArea>
-            <StyledTabs
-              value={index}
-              onChange={(e,value)=>handleChange(value)}
-              indicatorColor="primary"
-            >
-              <StyledTab label="会場情報" />
-              {events && <StyledTab label="公演履歴" />}
-              {placeMemos && <StyledTab label="メモ" />}
-            </StyledTabs>
-          </TabArea>
-          <SwipeableViews
-            enableMouseEvents
-            index={index}
-            onChangeIndex={(index) => handleChange(index)}
-          >
-            <MainArea>
-              <PlaceDetail place = {place}/>
-            </MainArea>
-            <MainArea>
-              {events ? (
-                <StyledCard
-                  variant="outlined"
-                >
-                  <CardInner>
-                    <p>この会場での公演履歴はありません</p>
-                  </CardInner>
-                </StyledCard>
-              ):(<>
-                {events.map((event) => {
-                  return <EventList key={event.id} event={event} />;
-                })}
-              </>)}
-            </MainArea>
-            <MainArea>
-              {placeMemos ? (
-                <StyledCard
-                  variant="outlined"
-                >
-                  <CardInner>
-                    <p>この会場についてのメモはありません</p>
-                  </CardInner>
-                </StyledCard>
-              ):(<>
-                {placeMemos.map((placeMemo) => {
-                  return <PlaceMemoList key={placeMemo.id} placeMemo={placeMemo} />;
-                })}
-              </>)}
-            </MainArea>
-          </SwipeableViews> 
-        </>
-      )}
-    </>
-  );
-}
