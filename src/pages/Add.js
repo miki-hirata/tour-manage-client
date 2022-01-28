@@ -29,9 +29,9 @@ export function AddPage({ setHdTitle }) {
           //scrollButtons
           //allowScrollButtonsMobile
         >
-          <StyledTab label="ツアー" />
-          <StyledTab label="会場" />
           <StyledTab label="イベント" />
+          <StyledTab label="会場" />
+          <StyledTab label="その他" />
           {/* <StyledTab label="その他" /> */}
         </StyledTabs>
         
@@ -42,9 +42,10 @@ export function AddPage({ setHdTitle }) {
         index={index}
         onChangeIndex={(index) => handleChange(index)}
       >
-        <TourAddPage/>
-        <PlaceAddPage/>
         <EventAddPage/>
+        <PlaceAddPage/>
+        
+        <TourAddPage/>
       </SwipeableViews> 
     </>
   );

@@ -11,14 +11,15 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
+import InputAdornment from '@mui/material/InputAdornment';
+import NotesIcon from '@mui/icons-material/Notes';
 
-export function EventAddPage({ setHdTitle }) {
+export function EventAddPage({ }) {
   const [eventCats, setEventCats] = useState(null);
-  const [Tours, setTours] = useState(null);
+  const [tours, setTours] = useState(null);
   
-  const [Places, setPlaces] = useState(null);
+  const [places, setPlaces] = useState(null);
   const { register, handleSubmit, formState: { errors }, control, setValue } = useForm();
-  //const { register, handleSubmit, errors, control, setValue } = useForm();
 
   const onSubmit = data => { 
     console.log(data);
@@ -65,6 +66,7 @@ export function EventAddPage({ setHdTitle }) {
                       return (
                         <MobileDatePicker
                           {...field}
+                          margin="normal"
                           label="日付"
                           inputFormat="yyyy/MM/dd"
                           mask="____/__/__"
@@ -81,103 +83,84 @@ export function EventAddPage({ setHdTitle }) {
                   <TextField
                     label="イベント名"
                     fullWidth
+                    required
+                    margin="normal"
                     variant="standard"
                     {...register("name", { required: true })}
                     error={Boolean(errors.name)}
-                    helperText={errors.name && errors.name.message}
+                    helperText={errors.name && '必須です（40文字以内）'}
                   />
                 </li>
                 <li>
                   <TextField
                     label="メモ"
                     fullWidth
-                    id="select"
+                    margin="normal"
+                    //id="select"
                     rows={3}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <NotesIcon />
+                        </InputAdornment>
+                      ),
+                    }}
                     variant="standard"
                     {...register("memo")}
-                    error={Boolean(errors.memo)}
-                    helperText={errors.memo && errors.memo.message}
                   />
                 </li>
                 <li>
-                  <Controller
-                    name="EventCatId"
-                    control={control}
-                    defaultValue="1"
-                    rules={{ required: "required!" }}
+                  <TextField
+                    fullWidth
+                    {...register("EventCatId", { required: true })}
+                    className="three"
+                    margin="normal"
                     variant="standard"
-                    render={({field}) => {
-                      return (
-                      <TextField
-                        select
-                        label="カテゴリー"
-                        fullWidth
-                        id="select"
-                        variant="standard"
-                        error={Boolean(errors.EventCatId)}
-                        helperText={errors.EventCatId && errors.EventCatId.message}
-                      >
-                        {eventCats && eventCats.map((eventCat) => (
-                          <MenuItem value={eventCat.id} key={eventCat.id}>
-                            {eventCat.name}
-                          </MenuItem>
-                        ))}
-                      </TextField>
-                      )
-                    }}
-                  />
-                </li>
-                <li>
-                  <Controller
-                    name="TourId"
-                    control={control}
-                    defaultValue="1"
-                    rules={{ required: "required!" }}
-                    render={({field}) => {
-                      return (
-                      <TextField
-                        select
-                        label="ツアー"
-                        fullWidth
-                        variant="standard"
-                        error={Boolean(errors.TourId)}
-                        helperText={errors.TourId && errors.TourId.message}
-                      >
-                        {Tours && Tours.map((tour) => (
-                          <MenuItem value={tour.id} key={tour.id}>
-                            {tour.name}
-                          </MenuItem>
-                        ))}
-                      </TextField>
-                      )
-                    }}
-                  />
-                </li>
-                <li>
-                  <Controller
-                    name="PlaceId"
-                    control={control}
-                    defaultValue="1"
-                    rules={{ required: "required!" }}
-                    render={({field}) => {
-                      return (
-                      <TextField
-                        select
-                        label="会場"
-                        fullWidth
-                        error={Boolean(errors.PlaceId)}
-                        helperText={errors.PlaceId && errors.PlaceId.message}
-                        variant="standard"
-                      >
-                        {Places && Places.map((Place) => (
-                          <MenuItem value={Place.id} key={Place.id}>
-                            {Place.name}
-                          </MenuItem>
-                        ))}
-                      </TextField>
-                      )
-                    }}
-                  />
+                    required
+                    select
+                    onChange={e => setValue('EventCatId', e.target.value, true)}
+                    label="カテゴリー"
+                    error={Boolean(errors.EventCatId)}
+                    helperText={errors.EventCatId && '必須です'}
+                  >
+                    {eventCats && eventCats.map((cat) => (
+                      <MenuItem value={cat.id} key={cat.id}>
+                        {cat.name}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                  <TextField
+                    fullWidth
+                    {...register("TourId", { required: true })}
+                    className="three"
+                    margin="normal"
+                    variant="standard"
+                    select
+                    onChange={e => setValue('TourId', e.target.value, true)}
+                    label="ツアー"
+                  >
+                    {tours && tours.map((tour) => (
+                      <MenuItem value={tour.id} key={tour.id}>
+                        {tour.name}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                  <TextField
+                    fullWidth
+                    {...register("PlaceId")}
+                    className="three"
+                    margin="normal"
+                    variant="standard"
+                    select
+                    onChange={e => setValue('PlaceId', e.target.value, true)}
+                    label="会場"
+                  >
+                    {places && places.map((place) => (
+                      <MenuItem value={place.id} key={place.id}>
+                        {place.name}
+                      </MenuItem>
+                    ))}
+                  </TextField>
                 </li>
                 <Button type="submit" variant="contained" color="primary" className='submit_button'>
                   新規登録

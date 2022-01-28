@@ -94,8 +94,8 @@ export function PlaceAddPage({ }) {
     let PostalCodeH = document.getElementById('postalCodeH').value;
     let PostalCodeF = document.getElementById('postalCodeF').value;
     data.postalCode = `${PostalCodeH}-${PostalCodeF}`;
-    //console.log(data);
-    postPlace(data, 'add');
+    console.log(data);
+    //postPlace(data, 'add');
   }
 
   
@@ -130,7 +130,7 @@ export function PlaceAddPage({ }) {
                   variant="standard"
                   {...register("name", { required: true })}
                   error={Boolean(errors.name)}
-                  helperText={errors.name && errors.name.message}
+                  helperText={errors.name && '必須です（40文字以内）'}
                 />
               </li>
               <li>
@@ -188,6 +188,25 @@ export function PlaceAddPage({ }) {
                 />
               </li>
               <li>
+                <TextField
+                  fullWidth
+                  {...register("PlaceCatId", { required: true })}
+                  className="three"
+                  margin="normal"
+                  variant="standard"
+                  required
+                  select
+                  onChange={e => setValue('PlaceCatId', e.target.value, true)}
+                  label="カテゴリー"
+                  error={Boolean(errors.PlaceCatId)}
+                  helperText={errors.PlaceCatId && '必須です'}
+                >
+                {placeCats && placeCats.map((placeCat) => (
+                  <MenuItem value={placeCat.id} key={placeCat.id}>
+                    {placeCat.name}
+                  </MenuItem>
+                ))}
+                </TextField>{/* 
                 <Controller
                   name="PlaceCatId"
                   control={control}
@@ -216,7 +235,7 @@ export function PlaceAddPage({ }) {
                     </TextField>
                     )
                   }}
-                />
+                /> */}
                 <TextField
                   label="国"
                   variant="standard"
@@ -254,8 +273,7 @@ export function PlaceAddPage({ }) {
                   }}
                   variant="standard"
                   {...register("prefecture")}
-                  error={Boolean(errors.prefecture)}
-                  helperText={errors.prefecture && errors.prefecture.message}
+                  onChange={e => setValue('prefecture', e.target.value, true)}//うまくいかない
                 />
                 <TextField
                   name="city"
@@ -272,8 +290,7 @@ export function PlaceAddPage({ }) {
                   }}
                   variant="standard"
                   {...register("city")}
-                  error={Boolean(errors.city)}
-                  helperText={errors.city && errors.city.message}
+                  onChange={e => setValue('city', e.target.value, true)}//うまくいかない
                 />
                 <TextField
                   name="street"
@@ -289,9 +306,8 @@ export function PlaceAddPage({ }) {
                     ),
                   }}
                   variant="standard"
-                  {...register("street")}
-                  error={Boolean(errors.street)}
-                  helperText={errors.street && errors.street.message}
+                  {...register("street")}h
+                  onChange={e => setValue('street', e.target.value, true)}
                 />
               </li>
               <Button type="submit" variant="contained" color="primary" className='submit_button'>

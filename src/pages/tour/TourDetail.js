@@ -1,11 +1,19 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { MainArea, Loading, FormatUpdate, EventList, TabArea, StyledTabs, StyledTab,StyledCard, CardInner} from "../../components";
+import { MainArea, Loading, FormatUpdate, EventList, AddUl, TabArea, StyledDeleteButton, StyledTabs, StyledTab,StyledCard, CardInner} from "../../components";
 import { getTour, handleDeleteTour, handleEditTour, getTourEvents } from "../../apis";
 import SwipeableViews from 'react-swipeable-views';
+import { useForm, Controller } from "react-hook-form";
+import { postTour } from "../../apis";
+import TextField from '@mui/material/TextField';
+import NotesIcon from '@mui/icons-material/Notes';
+import InputAdornment from '@mui/material/InputAdornment';
+import Button from '@mui/material/Button';
+
 
 
 function TourDeleteButton({ tour }) {
+  
   return (
     <>
       <form onSubmit={handleDeleteTour}>
@@ -17,6 +25,15 @@ function TourDeleteButton({ tour }) {
 }
 
 function TourDetail({ tour }) {
+  const { register, handleSubmit, formState: { errors }, control, setValue } = useForm();
+  
+  const onSubmit = data => { 
+    data.id = tour.id;
+    console.log(data);
+    postTour(data, 'edit');
+  }
+
+/* 
   //編集モードかどうかによる出し分け(独立コンポーネントにするとエラー)
   const [edit, setEdit] = useState(false);
   const toggleEdit = () => setEdit(!edit);
@@ -26,11 +43,60 @@ function TourDetail({ tour }) {
     } else {
       return <button onClick={toggleEdit}>編集</button>
     }
-  }
+  } */
 
   return (
     <>
-      <form onSubmit={handleEditTour}> 
+    <StyledCard
+      variant="outlined"
+      >
+      <CardInner>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <AddUl>
+            <li>
+              <TextField
+                label="ツアー名"
+                fullWidth
+                required
+                margin="normal"
+                variant="standard"
+                defaultValue={tour.name}
+                {...register("name", { required: true })}
+                error={Boolean(errors.name)}
+                helperText={errors.name && errors.name.message}
+              />
+            </li>
+            <li>
+              <TextField
+                label="メモ"
+                fullWidth
+                id="select"
+                margin="normal"
+                rows={3}
+                variant="standard"
+                defaultValue={tour.memo}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <NotesIcon />
+                    </InputAdornment>
+                  ),
+                }}
+                {...register("memo")}
+                error={Boolean(errors.memo)}
+                helperText={errors.memo && errors.memo.message}
+              />
+            </li>
+            <Button type="submit" variant="contained" color="primary" className='submit_button'>
+              更新
+            </Button>
+          </AddUl>
+        </form>
+        {/* <StyledDeleteButton />作成中 */}
+        <FormatUpdate updateAt={tour.updatedAt}/>
+      </CardInner>
+    </StyledCard>
+      {/* <form onSubmit={handleEditTour}> 
         <StyledCard
           variant="outlined"
           >
@@ -49,7 +115,7 @@ function TourDetail({ tour }) {
         <EditButton />
       </form>
       <FormatUpdate updateAt={tour.updatedAt}/>
-      <TourDeleteButton tour={tour}/>
+      <TourDeleteButton tour={tour}/> */}
     </>
   );
 }

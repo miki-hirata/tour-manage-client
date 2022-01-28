@@ -21,32 +21,16 @@ import MapIcon from '@mui/icons-material/Map';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
 import MapsHomeWorkIcon from '@mui/icons-material/MapsHomeWork';
 
-function PlaceDeleteButton({ place }) {
-  return (
-    <>
-      <form onSubmit={handleDeletePlace}>
-        <input type="hidden" name="id" value={place.id}/>
-        <button type="submit">削除</button>
-      </form>
-    </>
-  );
-}
 
-function PlaceDetail({ place }) {
+function PlaceDetail({ place, removed, setRemoved }) {
+  const [placeCats, setPlaceCats] = useState(null);
+  const { register, handleSubmit, formState: { errors }, control, setValue } = useForm();
   
-  //編集モードかどうかによる出し分け(独立コンポーネントにするとエラー)
-  const [edit, setEdit] = useState(false);
-  const toggleEdit = () => setEdit(!edit);
-  function EditButton() {
-    if(edit){
-      return <button type="submit" onClick={toggleEdit}>更新</button>
-    } else {
-      return (
-        {/* <StyledEditButton toggleEdit={toggleEdit}/> */}
-      );
-    }
+  const onSubmit = data => { 
+    data.id = place.id;
+    console.log(data);
+    postPlace(data, 'edit');
   }
-  
   
   useEffect(() => {
     let unmounted = false;//メモリリーク防止
@@ -60,19 +44,11 @@ function PlaceDetail({ place }) {
     };
   }, []);
 
-  const [placeCats, setPlaceCats] = useState(null);
-  const { register, handleSubmit, formState: { errors }, control, setValue } = useForm();
-  
-  const onSubmit = data => { 
-    //県・市が一度クリックしないと読み込めない
-    //document.getElementById('prefecture').click();
-    let PostalCodeH = document.getElementById('postalCodeH').value;
-    let PostalCodeF = document.getElementById('postalCodeF').value;
-    data.postalCode = `${PostalCodeH}-${PostalCodeF}`;
-    //console.log(data);
-    postPlace(data, 'add');
+  const onDelete = data => { 
+    data.removed = true;
+    setRemoved(true);
+    postPlace(data, 'edit');
   }
-
 
   return (
     <>
@@ -80,12 +56,7 @@ function PlaceDetail({ place }) {
         variant="outlined"
         >
         <CardInner>
-          <form 
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleEditPlace();
-            }}
-          >
+          <form onSubmit={handleSubmit(onSubmit)}>
             <AddUl>
               <li>
                 <TextField
@@ -158,35 +129,26 @@ function PlaceDetail({ place }) {
                 />
               </li>
               <li>
-                <Controller
-                  name="PlaceCatId"
-                  control={control}
-                  defaultValue="1"
-                  rules={{ required: "required!" }}
+                <TextField
+                  fullWidth
+                  {...register("PlaceCatId", { required: true })}
+                  className="three"
+                  margin="normal"
                   variant="standard"
-                  render={({field}) => {
-                    return (
-                    <TextField
-                      select
-                      label="カテゴリー"
-                      className="three"
-                      required
-                      margin="normal"
-                      defaultValue={place.PlaceCat}
-                      id="select"
-                      variant="standard"
-                      error={Boolean(errors.PlaceCatId)}
-                      helperText={errors.PlaceCatId && errors.PlaceCatId.message}
-                    >
-                      {placeCats && placeCats.map((placeCat) => (
-                        <MenuItem value={placeCat.id} key={placeCat.id}>
-                          {placeCat.name}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                    )
-                  }}
-                />
+                  defaultValue={place.PlaceCatId}
+                  required
+                  select
+                  onChange={e => setValue('PlaceCatId', e.target.value, true)}
+                  label="カテゴリー"
+                  error={Boolean(errors.PlaceCatId)}
+                  helperText={errors.PlaceCatId && '必須です'}
+                >
+                {placeCats && placeCats.map((placeCat) => (
+                  <MenuItem value={placeCat.id} key={placeCat.id}>
+                    {placeCat.name}
+                  </MenuItem>
+                ))}
+                </TextField>
                 <TextField
                   label="国"
                   variant="standard"
@@ -282,20 +244,13 @@ function PlaceDetail({ place }) {
                   helperText={errors.street && errors.street.message}
                 />
               </li>
-              <Button 
-                type="submit" 
-                variant="contained"
-                color="primary" 
-                className='submit_button'
-                onClick={toggleEdit}
-               >
+              <Button type="submit" variant="contained" color="primary" className='submit_button'>
                 更新
               </Button>
             </AddUl>
-            <input type="hidden" name="id" value={place.id}/>
-              {/* <EditButton /> */}
+             {/* <EditButton /> */}
           </form>
-          <StyledDeleteButton handleDelete={handleDeletePlace} id={place.id}/>
+          <StyledDeleteButton handleSubmit={handleSubmit} onDelete={onDelete} />{/* 作成中 */}
           <FormatUpdate updateAt={place.updatedAt}/>
         </CardInner>
       </StyledCard>
@@ -309,6 +264,7 @@ export function PlaceDetailPage({ setHdTitle }) {
   const [place, setPlace] = useState(null);
   const [events, setEvents] = useState(null);
   const [placeMemos, setPlaceMemos] = useState(null);
+  const [removed, setRemoved] = useState(false);
   const [index, setIndex] = useState(0);
   const params = useParams();
 
@@ -333,6 +289,8 @@ export function PlaceDetailPage({ setHdTitle }) {
       if (!unmounted) {
         setPlace(data);
         setHdTitle(data.name)
+        setRemoved(data.removed);
+        console.log(data);
       }
     });
     return () => {

@@ -1,4 +1,5 @@
 import { BrowserRouter as Link } from "react-router-dom";
+import { postPlace } from "../apis";
 
 import styled from "styled-components";
 import IconButton from '@mui/material/IconButton';
@@ -26,20 +27,19 @@ left: 20px;
 bottom: 20px;
 `;
 
-
-
-export function StyledDeleteButton({ handleDelete, id }) {
+export function StyledDeleteButton({ handleSubmit, onDelete }) {
+  
   return (
     <DeleteButtonStyle>
-      <form onSubmit={handleDelete}>
-        <input type="hidden" name="id" value={id}/>
-        <IconButton aria-label="delete" size="large" onSubmit={handleDelete}>
+      <form  onSubmit={handleSubmit(onDelete)}>
+        <IconButton aria-label="delete" size="large" type="submit">
           <DeleteIcon />
         </IconButton>
       </form>
     </DeleteButtonStyle>
   );
 }
+
 
 
 const DeleteButtonStyle = styled.div`
