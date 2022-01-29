@@ -63,15 +63,12 @@ function HomeButton({ }) {
 }
 
 export default function App() {
-  //const [naviOpen, setNaviOpen] = useState(false);
-  //const toggleNaviOpen = () => setNaviOpen(!naviOpen);
   const [hdTitle, setHdTitle] = useState('');
 
   return (
     <ThemeProvider theme={theme}>
       <Wrapper>
         <Router>
-          {/* <Navi naviOpen={naviOpen}/> */}
           <Header title={hdTitle}/>
           <Switch>
             <Route path="/" exact>

@@ -4,7 +4,7 @@ import { MainArea, Loading, EventList } from "../../components";
 import { getEvents } from "../../apis";
 
 
-export function EventListPage({ setHdTitle }) {
+export function EventListPage({ }) {
   const [events, setEvents] = useState(null);
   const location = useLocation();
   const query = new URLSearchParams(location.search);

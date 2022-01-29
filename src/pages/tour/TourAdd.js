@@ -1,14 +1,9 @@
 import * as React from 'react';
-
-import { useEffect, useState } from "react";
-import { MainArea, StyledCard, CardInner, AddUl} from "../../components";
+import { MainArea, StyledCard, CardInner, AddUl } from "../../components";
 
 import { useForm, Controller } from "react-hook-form";
 import { postTour } from "../../apis";
-import DateAdapter from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
 import NotesIcon from '@mui/icons-material/Notes';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -22,11 +17,12 @@ export function TourAddPage({ setHdTitle }) {
   }
 
   return (
-    <MainArea>
+    <>{/* MainAreaはOtherAddPage */}
       <StyledCard
         variant="outlined"
         >
         <CardInner>
+          <h2 className="font_main">ツアー</h2>
           <form onSubmit={handleSubmit(onSubmit)}>
             <AddUl>
               <li>
@@ -34,7 +30,6 @@ export function TourAddPage({ setHdTitle }) {
                   label="ツアー名"
                   fullWidth
                   required
-                  margin="normal"
                   variant="standard"
                   {...register("name", { required: true })}
                   error={Boolean(errors.name)}
@@ -45,7 +40,6 @@ export function TourAddPage({ setHdTitle }) {
                 <TextField
                   label="メモ"
                   fullWidth
-                  id="select"
                   margin="normal"
                   rows={3}
                   variant="standard"
@@ -68,6 +62,6 @@ export function TourAddPage({ setHdTitle }) {
           </form>
         </CardInner>
       </StyledCard>
-    </MainArea>
+    </>
   );
 }

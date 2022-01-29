@@ -126,7 +126,7 @@ export function PlaceAddPage({ }) {
                   label="会場名"
                   required
                   fullWidth
-                  margin="normal"
+                  //margin="normal"
                   variant="standard"
                   {...register("name", { required: true })}
                   error={Boolean(errors.name)}

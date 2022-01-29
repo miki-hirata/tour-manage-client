@@ -5,21 +5,17 @@ export async function getPlaceCats(arg = {}) {
   const params = new URLSearchParams(arg);
   return request(`/placecats?${params.toString()}`);
 }
-/* 
-export async function getEvent(eventId) {
-  return request(`/events?id=${eventId}`);
-}
 
-export async function getEventSches(eventId) {
-  return request(`/events/sches?id=${eventId}`);
+export async function getPlaceCat(placeCatId) {
+  return request(`/placecats?id=${placeCatId}`);
 }
 
 
 //POSTリクエストをまとめる　typeに文字列で挿入する
 //リダイレクト処理が上手くいっていない
-export async function postEvent(event, type){
-  return request(`/events/${type}`, {
-    body: JSON.stringify(event),
+export async function postPlaceCat(placeCat, type){
+  return request(`/placecats/${type}`, {
+    body: JSON.stringify(placeCat),
     headers: {
       "Content-Type": "application/json",
     },
@@ -27,7 +23,7 @@ export async function postEvent(event, type){
   });
 }
 
-
+/* 
 export async function handleDeleteEvent(content) {
   const event = {
     "id": content.target.elements.id.value,

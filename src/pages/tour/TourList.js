@@ -2,6 +2,26 @@ import { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { Loading, MainArea,  StyledCard, CardInnerHead, HeadMainFont } from "../../components";
 import { getTours } from "../../apis";
+import MediaQuery from "react-responsive";
+import { onlyPC, notSP } from "../../setting"
+import { blueGrey, red, yellow, green, blue } from '@mui/material/colors';
+import CircleIcon from '@mui/icons-material/Circle';
+
+//iconColor 1 赤　2 黄色 3 緑 4 青
+
+function TourIcon({ iconColor }) {
+  if (iconColor == 1){
+    return <CircleIcon sx={{ color: red[500] }}/>;
+  } else if (iconColor == 2) {
+    return <CircleIcon sx={{ color: yellow[500] }}/>;
+  } else if (iconColor == 3) {
+    return <CircleIcon sx={{ color: green[500] }}/>;
+  } else if (iconColor == 4) {
+    return <CircleIcon sx={{ color: blue[500] }}/>;
+  } else {
+    return <CircleIcon sx={{ color: blueGrey[500] }}/>;
+  }
+}
 
 function TourList({ tour }) {
   return (    
@@ -11,7 +31,23 @@ function TourList({ tour }) {
         to={`/tours/${tour.id}`}
       >
         <CardInnerHead>
-          <HeadMainFont>{tour.name}</HeadMainFont>
+          <div className="inner_flex">
+            <h2 className="font_main">
+              {tour.name.substr( 0, 20 )}
+            </h2>
+            
+            {tour.memo != null &&
+              <MediaQuery query={notSP}>
+                <div className="info">
+                  <p className="font_sub">
+                    <span>{tour.memo.substr( 0, 20 )}</span>
+                  </p>
+                </div>
+              </MediaQuery>
+            }
+          </div>
+          
+          <TourIcon iconColor={tour.iconColor}/>
         </CardInnerHead>
       </Link>
     </StyledCard>

@@ -50,7 +50,7 @@ export function PlacePage({ setHdTitle }) {
       >
         <PlaceDetailPage place = {place}/>
         <PlaceEventPage/>
-        <PlaceMemoPage/>
+        <PlaceMemoPage place = {place}/>
       </SwipeableViews> 
       </>
       )}

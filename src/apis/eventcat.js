@@ -5,28 +5,23 @@ export async function getEventCats(arg = {}) {
   const params = new URLSearchParams(arg);
   return request(`/eventcats?${params.toString()}`);
 }
-/* 
-export async function getEvent(eventId) {
-  return request(`/events?id=${eventId}`);
-}
 
-export async function getEventSches(eventId) {
-  return request(`/events/sches?id=${eventId}`);
+export async function getEventCat(eventCatId) {
+  return request(`/events?id=${eventCatId}`);
 }
-
 
 //POSTリクエストをまとめる　typeに文字列で挿入する
 //リダイレクト処理が上手くいっていない
-export async function postEvent(event, type){
-  return request(`/events/${type}`, {
-    body: JSON.stringify(event),
+export async function postEventCat(eventCat, type){
+  return request(`/eventcats/${type}`, {
+    body: JSON.stringify(eventCat),
     headers: {
       "Content-Type": "application/json",
     },
     method: "POST",
   });
 }
-
+/* 
 export async function handleEditEvent(content) {
   const event = {
     "id": content.target.elements.id.value,

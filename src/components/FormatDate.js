@@ -23,25 +23,34 @@ export function FormatDate({ date }) {
 
 const DateStyle = styled.div`
 margin-top: 4px;
+margin-right: 2em;
+${tab`
+  margin-right: 1em;
+`}
 > .top {
   font-size: 14px;
   font-weight: bold;
+  ${sp`
+    font-size: 13px;
+  `}
 } //top
 > .bottom {
   margin-top: -0.1em;
   text-align: center;
   > .day {
-    font-size: 28px;
-    
-    ${sp`
-      font-size: 20px;
-    `}
+    font-size: 30px;
     font-weight: bold;
+    ${tab`
+      font-size: 24px;
+    `}
+    ${sp`
+      font-size: 22px;
+    `}
   }
   > .week {
     font-size: 12px;
     font-weight: bold;
-    margin-left: 0.1em;
+    margin-left: 0.4em;
   }
 }
 `;

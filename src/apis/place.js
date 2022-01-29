@@ -34,3 +34,14 @@ export async function handleDeletePlace(content) {
   };
   await postPlace(place, 'delete');
 }
+
+
+export async function postPlaceMemo(placeMemo, type){
+  return request(`/placememos/${type}`, {
+    body: JSON.stringify(placeMemo),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+  });
+}
