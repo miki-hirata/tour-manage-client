@@ -214,7 +214,7 @@ export function EventDetail({ event, sches }) {
           <FormatUpdate updateAt={event.updatedAt}/>
         </CardInner>
       </StyledCard>
-      <EventSches event={event}/>
+      {/* <EventSches event={event}/> herokuでエラーが起きるので保留*/}
     </MainArea>
   );
 }
