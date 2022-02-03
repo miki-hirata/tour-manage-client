@@ -33,7 +33,7 @@ function TourList({ tour }) {
         <CardInnerHead>
           <div className="inner_flex">
             <h2 className="font_main">
-              {tour.name.substr( 0, 20 )}
+              {tour.name != null && tour.name.substr( 0, 20 )}
             </h2>
             
             {tour.memo != null &&

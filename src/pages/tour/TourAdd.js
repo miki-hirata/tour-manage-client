@@ -12,7 +12,7 @@ export function TourAddPage({ setHdTitle }) {
   const { register, handleSubmit, formState: { errors }, control, setValue } = useForm();
 
   const onSubmit = data => { 
-    console.log(data);
+    //console.log(data);
     postTour(data, 'add');
   }
 

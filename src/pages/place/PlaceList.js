@@ -36,7 +36,7 @@ function PlaceList({ place }) {
         <CardInnerHead>
           <div className="inner_flex">
             <h2 className="font_main">
-              {place.name.substr( 0, 20 )}
+              {place.name != null && place.name.substr( 0, 20 )}
             </h2>
             <MediaQuery query={notSP}>
               <div className="info">

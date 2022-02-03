@@ -94,8 +94,8 @@ export function PlaceAddPage({ }) {
     let PostalCodeH = document.getElementById('postalCodeH').value;
     let PostalCodeF = document.getElementById('postalCodeF').value;
     data.postalCode = `${PostalCodeH}-${PostalCodeF}`;
-    console.log(data);
-    //postPlace(data, 'add');
+    //console.log(data);
+    postPlace(data, 'add');
   }
 
   

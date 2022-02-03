@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useParams, Link } from "react-router-dom";
 import { handleDeleteEvent, handleEditEvent, getEventSches } from "../apis";
-import { MainArea, StyledCard, CardInner, AddUl, FormatDate, FormatUpdate, HeadMainFont, HeadSubFont, StyledEditButton } from "./index";
+import { MainArea, StyledCard, CardInner, AddUl, FormatDate, FormatUpdate, EventSches, StyledEditButton } from "./index";
 import styled from "styled-components";
 
 import { postEvent, getPlaces, getEventCats, getTours } from "../apis";
@@ -214,70 +214,7 @@ export function EventDetail({ event, sches }) {
           <FormatUpdate updateAt={event.updatedAt}/>
         </CardInner>
       </StyledCard>
-    {/* <div key={event.id}>
-      <form onSubmit={handleEditEvent}> 
-      
-      <StyledCard
-        variant="outlined"
-      >
-        <CardInnerHead>
-          <FormatDate date={event.date} />
-          {edit && <input type="date" name="date" defaultValue={defaultDate} disabled={!edit}/>}
-          
-          <HeadMainArea>
-            <HeadSubFont>
-              <input type="text" name="name" defaultValue={event.name} disabled={!edit}/>
-            </HeadSubFont>
-            {event.Place &&
-              <Link
-                key={event.id}
-                to={`/places/${event.Place.id}`}
-              >
-                <HeadMainFont>{event.Place.name}</HeadMainFont>
-              </Link>
-            }
-            {edit && <><label htmlFor="PlaceId">会場ID:</label><input type="number" name="PlaceId" defaultValue={event.PlaceId} placeholder="会場ID" /></>}
-          </HeadMainArea>
-        </CardInnerHead>
-      </StyledCard>
-      <StyledCard
-        variant="outlined"
-        >
-        {event.EventSches.length >= 1 && 
-          <CardInner>
-            {sches.map((sche) => {
-              return (
-                <dl key={sche.id} >
-                  <dt>{sche.time}</dt>
-                  <dd>{sche.name}{sche.memo}</dd>
-                </dl>
-              );
-            })}
-          </CardInner>
-        }
-        <CardInner>
-          <dl>
-            <dt>ID</dt>
-            <dd>{event.id}</dd>
-          </dl>
-          <dl>
-            <dt>カテゴリー</dt>
-            {event.EventCat ? <dd>{event.EventCat.name}</dd> : '未登録'}
-          </dl>
-          <dl>
-            <dt>メモ</dt>
-            <dd>{event.memo}</dd>
-          </dl>
-        </CardInner>
-      </StyledCard>
-         <SelectPlace />
-        <input type="hidden" name="id" value={event.id}/>
-        <EditButton />
-      </form>
-      <FormatUpdate updateAt={event.updatedAt}/>
-      <EventDeleteButton event={event}/>
-    </div> */}
-    
+      <EventSches event={event}/>
     </MainArea>
   );
 }

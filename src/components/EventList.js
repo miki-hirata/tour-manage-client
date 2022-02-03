@@ -13,9 +13,9 @@ function EventIcon({ cat }) {
   if (cat == 1){
     return <StarsIcon sx={{ color: blueGrey[500] }}/>;
   } else if (cat == 2) {
-    return <ModeNightIcon sx={{ color: blueGrey[500] }}/>;
-  } else if (cat == 3) {
     return <DirectionsBusIcon sx={{ color: blueGrey[500] }}/>;
+  } else if (cat == 3) {
+    return <ModeNightIcon sx={{ color: blueGrey[500] }}/>;
   } else {
     return <CircleIcon sx={{ color: blueGrey[500] }}/>;
   }
@@ -34,9 +34,9 @@ export function EventList({ event, tour }) {
               <FormatDate date={event.date} />
               <div className="name">
                 <h2 className="font_main">
-                  {event.name.substr( 0, 20 )}
+                  {event.name != null && event.name.substr( 0, 20 )}
                 </h2>
-                {event.Place && 
+                {event.Place != null && 
                   <p className="font_sub">
                   <span>{event.Place.name.substr( 0, 20 )}</span>
                   </p>

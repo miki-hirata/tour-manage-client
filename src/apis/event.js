@@ -26,6 +26,16 @@ export async function postEvent(event, type){
   });
 }
 
+export async function postEventSches(event, type){
+  return request(`/eventSches/${type}`, {
+    body: JSON.stringify(event),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+  });
+}
+
 export async function handleDeleteEvent(content) {
   const event = {
     "id": content.target.elements.id.value,

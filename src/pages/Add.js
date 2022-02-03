@@ -15,7 +15,6 @@ import Button from '@mui/material/Button';
 
 
 
-
 function EventCatAddPage({}) {  
   const { register, handleSubmit, formState: { errors }, control, setValue } = useForm();
   const [ eventCats, setEventCats] = useState(null);
@@ -88,7 +87,7 @@ function PlaceCatAddPage({}) {
         variant="outlined"
         >
         <CardInner>
-          <h2 className="font_main">イベントカテゴリー</h2>
+          <h2 className="font_main">会場カテゴリー</h2>
           <p className="font_add_cat">現在のカテゴリー:
           {placeCats && placeCats.map((placeCat) => {
             return <span> {placeCat.name}</span>;
@@ -119,7 +118,7 @@ function PlaceCatAddPage({}) {
 
 
 
-function OtherAddPage({ setHdTitle }) {
+function OtherAddPage({ }) {
   
   return (
     <MainArea>

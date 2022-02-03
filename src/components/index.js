@@ -3,6 +3,7 @@ export * from "./Layouts.js";
 
 export * from "./EventList.js";
 export * from "./EventDetail.js";
+export * from "./EventSches.js";
 
 export * from "./FormatDate.js";
 export * from "./FormatUpdate.js";
