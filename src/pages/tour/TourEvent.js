@@ -6,6 +6,7 @@ import { getTourEvents } from "../../apis";
 export function TourEventPage({ tour }) {
   const [events, setEvents] = useState(null);
   const params = useParams();
+  let order = 0;
   useEffect(() => {
     let unmounted = false;//メモリリーク防止
     getTourEvents(params.tourId).then((data) => {
@@ -33,8 +34,10 @@ export function TourEventPage({ tour }) {
               </CardInner>
             </StyledCard>
           ) : (
-            events.map((event) => {
-              return <EventList key={event.id} event={event} tour={tour}/>;
+            events.map((event, i) => {
+              order = i;
+              i ++;
+              return <EventList key={event.id} event={event} tour={tour} order={order}/>;
             })
           )}
         </>

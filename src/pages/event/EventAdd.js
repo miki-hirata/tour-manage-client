@@ -14,12 +14,12 @@ import MobileDatePicker from '@mui/lab/MobileDatePicker';
 import InputAdornment from '@mui/material/InputAdornment';
 import NotesIcon from '@mui/icons-material/Notes';
 
-export function EventAddPage({ }) {
+export function EventAddPage({ tour }) {
   const [eventCats, setEventCats] = useState(null);
   const [tours, setTours] = useState(null);
-  
   const [places, setPlaces] = useState(null);
   const { register, handleSubmit, formState: { errors }, control, setValue } = useForm();
+  const defaultTour = tour && tour.id;//スケジュール一覧用
 
   const onSubmit = data => { 
     //console.log(data);
@@ -96,8 +96,8 @@ export function EventAddPage({ }) {
                     label="メモ"
                     fullWidth
                     margin="normal"
-                    //id="select"
-                    rows={3}
+                    multiline
+                    rows={2}
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
@@ -138,6 +138,7 @@ export function EventAddPage({ }) {
                     select
                     onChange={e => setValue('TourId', e.target.value, true)}
                     label="ツアー"
+                    defaultValue={defaultTour}
                   >
                     {tours && tours.map((tour) => (
                       <MenuItem value={tour.id} key={tour.id}>

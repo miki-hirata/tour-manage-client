@@ -20,13 +20,13 @@ function EventIcon({ cat }) {
     return <CircleIcon sx={{ color: blueGrey[500] }}/>;
   }
 }
-export function EventList({ event, tour }) {
+export function EventList({ event, tour, order}) {
   return (
     
     <StyledCard>
       <Link
       key={event.id}
-      to={tour ? `/tours/events/${tour.id}` : `/events/${event.id}`}
+      to={tour ? `/tours/events/${tour.id}/${order}` : `/events/${event.id}`}
       >
         <CardInnerHead>
           <div className="inner_flex">

@@ -77,7 +77,7 @@ export default function App() {
             <Route path="/add" exact>
               <AddPage setHdTitle={setHdTitle} />
             </Route>
-            <Route path="/tours/events/:tourId" exact>
+            <Route path="/tours/events/:tourId/:order" exact>
               <TourEventDetailPage setHdTitle={setHdTitle} />
             </Route>
             <Route path="/tours/:tourId" exact>

@@ -41,7 +41,8 @@ export function TourAddPage({ setHdTitle }) {
                   label="メモ"
                   fullWidth
                   margin="normal"
-                  rows={3}
+                  multiline
+                  rows={2}
                   variant="standard"
                   InputProps={{
                     startAdornment: (

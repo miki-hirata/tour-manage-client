@@ -4,6 +4,7 @@ import { MainArea, Loading, EventDetail, TabArea, StyledTabs, StyledTab } from "
 import { getTour, getTourEvents } from "../../apis";
 import { format } from 'date-fns';
 import SwipeableViews from 'react-swipeable-views';
+import { EventAddPage } from "../event";
 
 
 export function TourEventDetail({ event }) {
@@ -34,12 +35,13 @@ export function TourEventDetail({ event }) {
 
 export function TourEventDetailPage({ setHdTitle }) {
   //このページはevent一覧をずらっと並べて、ひとつづつ表示させる場所
+
+  const params = useParams();
   const [tour, setTour] = useState(null);
   const [events, setEvents] = useState(null);
   const [sches, setSches] = useState(null);
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(null);
 
-  const params = useParams();
   const handleChange = (ind) => {
     setIndex(ind)
   }
@@ -55,9 +57,16 @@ export function TourEventDetailPage({ setHdTitle }) {
     });
   }, [params.tourId]);
 
+  useEffect(() => {
+    setIndex(params.order);
+  }, [params.order]);
+
+  const status = (events == null) || (index == null);
+  //タブのvalueが読み込まれない
+
   return (
     <>
-      {events == null ? (
+      {status ? (
         <Loading />
       ) : (
         <>
@@ -66,12 +75,13 @@ export function TourEventDetailPage({ setHdTitle }) {
               value={index}
               onChange={(e,value)=>handleChange(value)}
             >
-            {events.map((event) => {
-              const tabDate = format(new Date(event.date), 'MM/dd');
-              return (
-                <StyledTab label={tabDate} key={event.id}/>
-              );
-            })}
+              {events.map((event) => {
+                const tabDate = format(new Date(event.date), 'MM/dd');
+                return (
+                  <StyledTab label={tabDate} key={event.id}/>
+                );
+              })}
+              <StyledTab label='新規作成'/>
             </StyledTabs>
           </TabArea> 
           <SwipeableViews
@@ -81,12 +91,13 @@ export function TourEventDetailPage({ setHdTitle }) {
           >
             {events.map((event) => {
               return (
-                  <TourEventDetail
-                    event = {event}
-                    key={event.id}
-                  />
+                <TourEventDetail
+                  event = {event}
+                  key={event.id}
+                />
               );
             })}
+            <EventAddPage tour = {tour}/>
           </SwipeableViews>
         </>
       )}
