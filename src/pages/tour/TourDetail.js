@@ -6,6 +6,8 @@ import TextField from '@mui/material/TextField';
 import NotesIcon from '@mui/icons-material/Notes';
 import InputAdornment from '@mui/material/InputAdornment';
 import Button from '@mui/material/Button';
+import MenuItem from '@mui/material/MenuItem';
+
 
 
 
@@ -70,6 +72,31 @@ export function TourDetailPage({ tour }) {
                   error={Boolean(errors.memo)}
                   helperText={errors.memo && errors.memo.message}
                 />
+              </li>
+              <li>
+                <TextField
+                  fullWidth
+                  {...register("iconColor", { required: true })}
+                  className="three"
+                  margin="normal"
+                  variant="standard"
+                  select
+                  onChange={e => setValue('iconColor', e.target.value, true)}
+                  label="ツアー色"
+                >
+                  <MenuItem value="1">
+                    赤
+                  </MenuItem>
+                  <MenuItem value="2">
+                    黄
+                  </MenuItem>
+                  <MenuItem value="3">
+                    緑
+                  </MenuItem>
+                  <MenuItem value="4">
+                    青
+                  </MenuItem>
+                </TextField>
               </li>
               <Button type="submit" variant="contained" color="primary" className='submit_button'>
                 更新
