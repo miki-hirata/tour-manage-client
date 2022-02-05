@@ -134,7 +134,8 @@ export function EventDetail({ event, sches }) {
                     margin="normal"
                     id="select"
                     defaultValue={event.memo}
-                    rows={3}
+                    multiline
+                    rows={2}
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">

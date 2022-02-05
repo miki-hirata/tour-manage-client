@@ -76,8 +76,8 @@ export function PlaceDetailPage({ place }) {
                   fullWidth
                   margin="normal"
                   defaultValue={place.memo}
-                  //multiline
-                  //rows={2}
+                  multiline
+                  rows={2}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">

@@ -10,13 +10,17 @@ import Button from '@mui/material/Button';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 
-function AddPlaceMemo({ place }) {  
-  const { register, handleSubmit, formState: { errors }, control, setValue } = useForm();
+function AddPlaceMemo({ place, submit, setSubmit }) {  
+  const { register, handleSubmit, formState: { errors }, control, setValue, reset } = useForm();
   const onSubmit = data => { 
     data.UserId = 1
     data.PlaceId = place.id;
     console.log(data);
-    postPlaceMemo(data, 'add');
+    postPlaceMemo(data, 'add').then(()=>{
+      setSubmit(submit + 1);
+      console.log(submit);
+      reset();//全てリセット
+    });
   }
   return (
     <>
@@ -70,6 +74,7 @@ function PlaceMemoList({ placeMemo }) {
 
 export function PlaceMemoPage({ place }) {
   const [placeMemos, setPlaceMemos] = useState(null);
+  const [submit, setSubmit] = useState(0);
   const params = useParams();
   
   useEffect(() => {
@@ -82,12 +87,12 @@ export function PlaceMemoPage({ place }) {
     return () => {
       unmounted = true;
     };
-  }, []);
+  }, [submit]);
 
 
   return (
     <MainArea>
-      <AddPlaceMemo place = {place}/>
+      <AddPlaceMemo place = {place} submit={submit} setSubmit={setSubmit}/>
       {placeMemos == null ? (
         <Loading />
       ) : (

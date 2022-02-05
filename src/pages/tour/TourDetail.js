@@ -58,7 +58,8 @@ export function TourDetailPage({ tour }) {
                   fullWidth
                   id="select"
                   margin="normal"
-                  rows={3}
+                  multiline
+                  rows={2}
                   variant="standard"
                   defaultValue={tour.memo}
                   InputProps={{
@@ -80,6 +81,7 @@ export function TourDetailPage({ tour }) {
                   className="three"
                   margin="normal"
                   variant="standard"
+                  defaultValue={tour.iconColor}
                   select
                   onChange={e => setValue('iconColor', e.target.value, true)}
                   label="ツアー色"

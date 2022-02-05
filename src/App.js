@@ -40,7 +40,7 @@ function AddButton({ }) {
       <Link
         to={`/add`}
       >
-        <Fab size="medium" color="secondary" aria-label="add">
+        <Fab size="medium" color="primary" aria-label="add">
           <AddIcon />
         </Fab>
       </Link>
@@ -48,7 +48,7 @@ function AddButton({ }) {
   );
 }
 
-function HomeButton({ }) {
+/* function HomeButton({ }) {
   return (
     <HomeButtonStyle>
       <Link
@@ -58,9 +58,9 @@ function HomeButton({ }) {
           <HomeIcon />
         </Fab>
       </Link>
-    </HomeButtonStyle>
-  );
-}
+    </HomeButtoSntyle>
+  ); 
+}*/
 
 export default function App() {
   const [hdTitle, setHdTitle] = useState('');
@@ -90,7 +90,7 @@ export default function App() {
               <PlacePage setHdTitle={setHdTitle} />
             </Route>
           </Switch>
-          <HomeButton/>
+          {/* <HomeButton/> */}
           <AddButton/>
         </Router>
       </Wrapper>
@@ -166,17 +166,23 @@ const Wrapper = styled.div`
 
 const AddButtonStyle = styled.div`
 position: fixed;
-right: 80px;
-bottom: 20px;
+right: 40px;
+bottom: 30px;
+${sp`
+  right: 20px;
+  bottom: 20px;
+
+`}
 `;
 
-const HomeButtonStyle = styled.div`
+
+/*const HomeButtonStyle = styled.div`
 position: fixed;
 right: 20px;
 bottom: 20px;
 `;
 
-/* const NaviStyle = styled.div`
+const NaviStyle = styled.div`
 .navi_area{
   background-color: navy;
   color: #fff;
