@@ -35,9 +35,6 @@ export const CardInner = styled.div`
   .font_sub{
     font-size: 16px;
   }
-  .font_small{
-    font-size: 12px;
-  }
   .font_add_cat{
     font-size: 13px;
     margin-top: 0.5em;
