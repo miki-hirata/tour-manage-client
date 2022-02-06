@@ -44,6 +44,7 @@ export function TourEventDetailPage({ setHdTitle }) {
 
   const handleChange = (ind) => {
     setIndex(ind)
+    window.scrollTo(0, 0);//遷移時に画面上部へ
   }
   
   useEffect(() => {

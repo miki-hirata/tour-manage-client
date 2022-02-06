@@ -11,6 +11,7 @@ export function PlacePage({ setHdTitle }) {
   const [index, setIndex] = useState(0);
   const handleChange = (ind) => {
     setIndex(ind)
+    window.scrollTo(0, 0);//遷移時に画面上部へ
   }
   const params = useParams();
   useEffect(() => {
