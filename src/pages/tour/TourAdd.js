@@ -64,6 +64,7 @@ export function TourAddPage({ setHdTitle }) {
                   className="three"
                   margin="normal"
                   variant="standard"
+                  defaultValue="1"
                   select
                   onChange={e => setValue('iconColor', e.target.value, true)}
                   label="ツアー色"

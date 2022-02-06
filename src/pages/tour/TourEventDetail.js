@@ -73,6 +73,7 @@ export function TourEventDetailPage({ setHdTitle }) {
           <TabArea>
             <StyledTabs
               value={index}
+              variant="scrollable"
               onChange={(e,value)=>handleChange(value)}
             >
               {events.map((event) => {

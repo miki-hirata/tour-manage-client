@@ -23,7 +23,6 @@ export const CardInner = styled.div`
       padding: 16px 16px 20px;
   `}
 
-
   .font_main{
     font-size: 18px;
     font-weight: bold;
@@ -38,6 +37,12 @@ export const CardInner = styled.div`
   .font_add_cat{
     font-size: 13px;
     margin-top: 0.5em;
+  }
+
+  .bin_icon{
+    position: absolute;
+    bottom: 23px;
+    right: 32px;
   }
   
 `;

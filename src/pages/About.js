@@ -86,12 +86,12 @@ export function AboutPage() {
             <div className="title">
               <AccessibilityIcon sx={{ color: blue[500] }} size="large"/>
               <h2>製作者</h2>
-              <p>柳澤 美希 (やなぎさわ みき)</p>
+              <p className="name">柳澤 美希 (やなぎさわ みき)</p>
             </div>
             <div>
               <h3>略歴</h3>
-              <p>新潟県出身。国際基督教大学アーツ・サイエンス学科 臨床心理学専攻。
-                <br/>卒業後、佐渡島へ移住。4年間プロ太鼓芸能集団のツアーマネージャーを務める。
+              <p>新潟県出身。国際基督教大学 教養学部 アーツ・サイエンス学科 臨床心理学専攻。
+                <br/>卒業後、佐渡島へ移住。4年間プロ太鼓芸能集団の制作・ツアーマネージャーを務める。
                 <br/>アメリカのFacebook本社を訪れた時、その独立国家さながらの規模間に感動し、ITの道に進むことを決意。
                 <br/>佐渡島内のWeb制作会社へ転職。HTML,Scss,JS,jQuery,PHPを使用したホームページ制作を行う。
                 <br/>モダン技術を使用したWeb開発への強い興味が芽生え、業務の区切りを見て退職。
@@ -189,7 +189,7 @@ export function AboutPage() {
                   <ul>
                     <li>・スワイプによる画面遷移</li>
                     <li>・会場追加時の郵便番号による住所入力</li>
-                    <li>・ツアースケジュールから各イベントを閲覧したとき、日付順にスワイプできる機能</li>
+                    <li>・ツアー詳細から各イベントを閲覧したとき、日付順にスワイプできる機能</li>
                   </ul>
               </div>
               <div className="box">
@@ -197,7 +197,7 @@ export function AboutPage() {
                   <ul>
                     <li>・ログイン機能</li>
                     <li>・ホテル/宿泊テーブルの追加</li>
-                    <li>・会場/ツアー/イベントの削除・お気に入り機能　</li>
+                    <li>・会場/ツアー/イベントのお気に入り機能</li>
                   </ul>
               </div>
             </div>
@@ -220,12 +220,9 @@ const AboutStyle = styled.div`
       margin-left: 0.6em;
       margin-right: 1em;
     }
-    .MuiSvgIcon-root{
-      //margin-top: -6px;
-    }
     p{
-      font-size: 14px;
-      line-height: 2;
+      font-size: 16px;
+      line-height: 1.8;
     }
     span{
       display: flex;

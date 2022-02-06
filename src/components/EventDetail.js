@@ -14,22 +14,8 @@ import MobileDatePicker from '@mui/lab/MobileDatePicker';
 import InputAdornment from '@mui/material/InputAdornment';
 import NotesIcon from '@mui/icons-material/Notes';
 import { useForm, Controller } from "react-hook-form";
-
-
-function EventDeleteButton({ event }) {
-  return (
-    <>
-      <form onSubmit={(e) => {
-          //e.preventDefault();
-          handleDeleteEvent();
-        }}
-      >
-        <input type="hidden" name="id" value={event.id}/>
-        <button type="submit">削除</button>
-      </form>
-    </>
-  );
-}
+import DeleteIcon from '@mui/icons-material/Delete';
+import { blueGrey } from '@mui/material/colors';
 
 export function EventDetail({ event, sches }) {
   //編集モードかどうかによる出し分け(独立コンポーネントにするとエラー)
@@ -44,6 +30,7 @@ export function EventDetail({ event, sches }) {
       );
     }
   }
+  
   let defaultDate = new Date(event.date);//日付を何とかしてデフォルトセットしたい
   
   const [eventCats, setEventCats] = useState(null);
@@ -57,6 +44,15 @@ export function EventDetail({ event, sches }) {
     data.id = event.id;
     console.log(data);
     postEvent(data, 'edit');
+  }
+
+  const onDelete = data => { 
+    data.id = event.id;
+    data.removed = true;
+    console.log(data);
+    postEvent(data, 'edit').then(()=>{
+      //setSubmit(submit + 1);
+    });
   }
 
   useEffect(() => {
@@ -210,8 +206,10 @@ export function EventDetail({ event, sches }) {
                 </Button>
               </AddUl>
             </form>
+            <form onSubmit={handleSubmit(onDelete)} className="bin_icon">
+              <button type="submit"><DeleteIcon sx={{ color: blueGrey[500] }}/></button>
+            </form>
           </LocalizationProvider>
-          {/* <StyledDeleteButton />作成中 */}
           <FormatUpdate updateAt={event.updatedAt}/>
         </CardInner>
       </StyledCard>
@@ -219,9 +217,4 @@ export function EventDetail({ event, sches }) {
     </MainArea>
   );
 }
-
-
-const HeadMainArea = styled.div`
-  margin-left: 40px;
-`;
 

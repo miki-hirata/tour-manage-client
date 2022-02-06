@@ -17,6 +17,9 @@ import PublicIcon from '@mui/icons-material/Public';
 import MapIcon from '@mui/icons-material/Map';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
 import MapsHomeWorkIcon from '@mui/icons-material/MapsHomeWork';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { blueGrey } from '@mui/material/colors';
+
 
 
 export function PlaceDetailPage({ place }) {
@@ -43,12 +46,15 @@ export function PlaceDetailPage({ place }) {
     };
   }, [params.placeId]);
 
-  /* const onDelete = data => { 
+  const onDelete = data => { 
+    data.id = place.id;
     data.removed = true;
-    setRemoved(true);
-    postPlace(data, 'edit');
+    console.log(data);
+    postPlace(data, 'edit').then(()=>{
+      //setSubmit(submit + 1);
+    });
   }
- */
+
   return (
     <MainArea>
       <StyledCard
@@ -247,13 +253,13 @@ export function PlaceDetailPage({ place }) {
                 更新
               </Button>
             </AddUl>
-            {/* <EditButton /> */}
           </form>
-          {/* <StyledDeleteButton handleSubmit={handleSubmit} onDelete={onDelete} />作成中 */}
+          <form onSubmit={handleSubmit(onDelete)} className="bin_icon">
+            <button type="submit"><DeleteIcon sx={{ color: blueGrey[500] }}/></button>
+          </form>
           <FormatUpdate updateAt={place.updatedAt}/>
         </CardInner>
       </StyledCard>
-      {/* <PlaceDeleteButton place={place}/> */}
     </MainArea>
   );
 }

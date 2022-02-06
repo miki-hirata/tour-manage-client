@@ -61,7 +61,7 @@ function PlaceMemoList({ placeMemo, submit, setSubmit  }) {
   const createdDate = format(new Date(placeMemo.createdAt), 'yyyy/MM/dd HH:mm:ss');
 
   const { register, handleSubmit, formState: { errors }, control, setValue, reset } = useForm();
-  const onSubmit = data => { 
+  const onDelete = data => { 
     data.id= placeMemo.id;
     console.log(data);
     postPlaceMemo(data, 'delete').then(()=>{
@@ -83,7 +83,7 @@ function PlaceMemoList({ placeMemo, submit, setSubmit  }) {
             <p className="name">{placeMemo.User.name}</p>
             <AccountCircleIcon/>
           </div>
-          <form onSubmit={handleSubmit(onSubmit)} className="delete">
+          <form onSubmit={handleSubmit(onDelete)} className="delete">
             <button type="submit">&times;</button>
           </form>
         </MemoStyle>

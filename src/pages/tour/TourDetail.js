@@ -7,22 +7,8 @@ import NotesIcon from '@mui/icons-material/Notes';
 import InputAdornment from '@mui/material/InputAdornment';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
-
-
-
-
-function TourDeleteButton({ tour }) {
-  
-  return (
-    <>
-      <form onSubmit={handleDeleteTour}>
-        <input type="hidden" name="id" value={tour.id}/>
-        <button type="submit">削除</button>
-      </form>
-    </>
-  );
-}
-
+import DeleteIcon from '@mui/icons-material/Delete';
+import { blueGrey } from '@mui/material/colors';
 
 export function TourDetailPage({ tour }) {
   const { register, handleSubmit, formState: { errors }, control, setValue } = useForm();
@@ -30,6 +16,14 @@ export function TourDetailPage({ tour }) {
     data.id = tour.id;
     console.log(data);
     postTour(data, 'edit');
+  }  
+  const onDelete = data => { 
+    data.id = tour.id;
+    data.removed = true;
+    console.log(data);
+    postTour(data, 'edit').then(()=>{
+      //setSubmit(submit + 1);
+    });
   }
   return (
     <MainArea>
@@ -105,7 +99,9 @@ export function TourDetailPage({ tour }) {
               </Button>
             </AddUl>
           </form>
-          {/* <StyledDeleteButton />作成中 */}
+          <form onSubmit={handleSubmit(onDelete)} className="bin_icon">
+            <button type="submit"><DeleteIcon sx={{ color: blueGrey[500] }}/></button>
+          </form>
           <FormatUpdate updateAt={tour.updatedAt}/>
         </CardInner>
       </StyledCard>
