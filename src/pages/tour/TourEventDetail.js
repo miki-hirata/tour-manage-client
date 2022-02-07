@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { MainArea, Loading, EventDetail, TabArea, StyledTabs, StyledTab } from "../../components";
 import { getTour, getTourEvents } from "../../apis";
 import { format } from 'date-fns';
@@ -40,13 +40,18 @@ export function TourEventDetailPage({ setHdTitle }) {
   const [tour, setTour] = useState(null);
   const [events, setEvents] = useState(null);
   const [sches, setSches] = useState(null);
-  const [index, setIndex] = useState(null);
+  const [index, setIndex] = useState(0);  
+  const [loaded, setLroaded] = useState(null);
+
 
   const handleChange = (ind) => {
     setIndex(ind)
     window.scrollTo(0, 0);//遷移時に画面上部へ
   }
-  
+ 
+  const location = useLocation();
+  //event list から渡されたインデックス
+
   useEffect(() => {
     getTour(params.tourId).then((data) => {
       setTour(data);
@@ -59,15 +64,14 @@ export function TourEventDetailPage({ setHdTitle }) {
   }, [params.tourId]);
 
   useEffect(() => {
-    setIndex(params.order);
-  }, [params.order]);
-
-  const status = (events == null) || (index == null);
-  //タブのvalueが読み込まれない
+    if(location.state.eventIndex){
+      setIndex(location.state.eventIndex);
+    }
+  }, []);
 
   return (
     <>
-      {status ? (
+      {events == null ? (
         <Loading />
       ) : (
         <>

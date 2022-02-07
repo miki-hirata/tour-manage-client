@@ -26,7 +26,8 @@ export function EventList({ event, tour, order}) {
     <StyledCard>
       <Link
       key={event.id}
-      to={tour ? `/tours/events/${tour.id}/${order}` : `/events/${event.id}`}
+      //to={tour ? `/tours/events/${tour.id}` : `/events/${event.id}`}
+      to={tour ? { pathname: `/tours/events/${tour.id}`, state: { eventIndex: order } } : `/events/${event.id}`}
       >
         <CardInnerHead>
           <div className="inner_flex">

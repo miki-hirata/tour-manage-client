@@ -9,7 +9,7 @@ import { pc, sp, tab, theme, mixinMaxWidth } from './setting';
 import { ThemeProvider } from '@material-ui/core';
 import styled from "styled-components";
 import Fab from '@mui/material/Fab';
-import HomeIcon from '@mui/icons-material/Home';
+//import HomeIcon from '@mui/icons-material/Home';
 import AddIcon from '@mui/icons-material/Add';
 import LogoPC from './img/tm_logo_pc.svg'
 
@@ -21,7 +21,7 @@ function Header({ title }) {
           
           <Link
               className="logo"
-              to={`/`}
+              to={{ pathname: `/`, state: { rootIndex: 0 } }}
             ><img src={LogoPC} alt="tour m." width="200" height="60" />
           </Link>
           <div className="title">
@@ -77,9 +77,12 @@ export default function App() {
             <Route path="/add" exact>
               <AddPage setHdTitle={setHdTitle} />
             </Route>
-            <Route path="/tours/events/:tourId/:order" exact>
+            <Route path="/tours/events/:tourId" exact>
               <TourEventDetailPage setHdTitle={setHdTitle} />
             </Route>
+            {/* <Route path="/tours/events/:tourId/:order" exact>
+              <TourEventDetailPage setHdTitle={setHdTitle} />
+            </Route> */}
             <Route path="/tours/:tourId" exact>
               <TourPage setHdTitle={setHdTitle} />
             </Route>

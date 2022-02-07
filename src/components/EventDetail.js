@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useParams, Link } from "react-router-dom";
-import { handleDeleteEvent, handleEditEvent, getEventSches } from "../apis";
+import { useHistory } from "react-router-dom";
 import { MainArea, StyledCard, CardInner, AddUl, FormatDate, FormatUpdate, EventSches, StyledEditButton } from "./index";
 import styled from "styled-components";
 
@@ -40,10 +39,14 @@ export function EventDetail({ event, sches }) {
   const { register, handleSubmit, formState: { errors }, control, setValue } = useForm();
   //const { register, handleSubmit, errors, control, setValue } = useForm();
 
+  const history= useHistory();
+   
   const onSubmit = data => { 
     data.id = event.id;
     console.log(data);
-    postEvent(data, 'edit');
+    postEvent(data, 'edit').then(()=>{
+      history.go(0);//レンダリング
+    });
   }
 
   const onDelete = data => { 
@@ -51,7 +54,8 @@ export function EventDetail({ event, sches }) {
     data.removed = true;
     console.log(data);
     postEvent(data, 'edit').then(()=>{
-      //setSubmit(submit + 1);
+      history.push({ pathname: '/', state: { rootIndex: 3 }});
+      //遷移先にrootIndexを渡す　→　イベント一覧に飛ぶ
     });
   }
 

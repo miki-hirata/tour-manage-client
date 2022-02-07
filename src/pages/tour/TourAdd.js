@@ -8,13 +8,17 @@ import Button from '@mui/material/Button';
 import NotesIcon from '@mui/icons-material/Notes';
 import InputAdornment from '@mui/material/InputAdornment';
 import MenuItem from '@mui/material/MenuItem';
+import { useHistory } from 'react-router-dom';
 
 export function TourAddPage({ setHdTitle }) {  
   const { register, handleSubmit, formState: { errors }, control, setValue } = useForm();
-
+  const history = useHistory();
   const onSubmit = data => { 
-    //console.log(data);
-    postTour(data, 'add');
+    console.log(data);
+    postTour(data, 'add').then(()=>{
+      history.push({ pathname: '/', state: { rootIndex: 1 }});
+      //遷移先にrootIndexを渡す
+    });
   }
 
   return (

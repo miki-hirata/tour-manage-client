@@ -13,6 +13,7 @@ import Button from '@mui/material/Button';
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
 import InputAdornment from '@mui/material/InputAdornment';
 import NotesIcon from '@mui/icons-material/Notes';
+import { useHistory } from 'react-router-dom';
 
 export function EventAddPage({ tour }) {
   const [eventCats, setEventCats] = useState(null);
@@ -20,10 +21,14 @@ export function EventAddPage({ tour }) {
   const [places, setPlaces] = useState(null);
   const { register, handleSubmit, formState: { errors }, control, setValue } = useForm();
   const defaultTour = tour && tour.id;//スケジュール一覧用
+  const history = useHistory();
 
   const onSubmit = data => { 
     //console.log(data);
-    postEvent(data, 'add');
+    postEvent(data, 'add').then(()=>{
+      history.push({ pathname: '/', state: { rootIndex: 3 }});
+      //遷移先にrootIndexを渡す　→　イベント一覧に飛ぶ
+    });
   }
 
   useEffect(() => {

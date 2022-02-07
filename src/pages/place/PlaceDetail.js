@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useParams, Link } from "react-router-dom";
+import { useHistory, useParams, Link } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 
 import { MainArea, Loading, FormatUpdate, StyledCard, CardInner, StyledDeleteButton, AddUl } from "../../components";
@@ -23,7 +23,8 @@ import { blueGrey } from '@mui/material/colors';
 
 
 export function PlaceDetailPage({ place }) {
-  
+  const history = useHistory();
+
   const [placeCats, setPlaceCats] = useState(null);
   const { register, handleSubmit, formState: { errors }, control, setValue } = useForm();
   const params = useParams();
@@ -31,7 +32,9 @@ export function PlaceDetailPage({ place }) {
   const onSubmit = data => { 
     data.id = place.id;
     console.log(data);
-    postPlace(data, 'edit');
+    postPlace(data, 'edit').then(()=>{
+      history.go(0);//レンダリング
+    });
   }
   
   useEffect(() => {
@@ -51,7 +54,8 @@ export function PlaceDetailPage({ place }) {
     data.removed = true;
     console.log(data);
     postPlace(data, 'edit').then(()=>{
-      //setSubmit(submit + 1);
+      history.push({ pathname: '/', state: { rootIndex: 2 }});
+      //遷移先にrootIndexを渡す　→　会場一覧に飛ぶ
     });
   }
 

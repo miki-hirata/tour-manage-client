@@ -1,5 +1,6 @@
 import { MainArea, FormatUpdate, StyledCard, CardInner, AddUl} from "../../components";
 import { handleDeleteTour } from "../../apis";
+import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { postTour } from "../../apis";
 import TextField from '@mui/material/TextField';
@@ -12,17 +13,21 @@ import { blueGrey } from '@mui/material/colors';
 
 export function TourDetailPage({ tour }) {
   const { register, handleSubmit, formState: { errors }, control, setValue } = useForm();
+  const history= useHistory();
   const onSubmit = data => { 
     data.id = tour.id;
     console.log(data);
-    postTour(data, 'edit');
+    postTour(data, 'edit').then(()=>{
+      history.go(0);//レンダリング
+    });
   }  
   const onDelete = data => { 
     data.id = tour.id;
     data.removed = true;
     console.log(data);
     postTour(data, 'edit').then(()=>{
-      //setSubmit(submit + 1);
+      history.push({ pathname: '/', state: { rootIndex: 1 }});
+      //遷移先にrootIndexを渡す　→　`ツアー一覧に飛ぶ
     });
   }
   return (

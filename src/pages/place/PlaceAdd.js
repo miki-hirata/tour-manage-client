@@ -1,8 +1,9 @@
 import React from 'react';
 import { useEffect, useState } from "react";
 
-import { useForm, Controller } from "react-hook-form";
-import { handleAddPlace, postPlace, getPlaceCats } from "../../apis";
+import { useForm } from "react-hook-form";
+import { postPlace, getPlaceCats } from "../../apis";
+import { useHistory } from 'react-router-dom';
 
 import { MainArea, StyledCard, CardInner, AddUl } from "../../components";
 
@@ -84,7 +85,7 @@ class AutoAddress extends React.Component {
 export default AutoAddress;
 
 export function PlaceAddPage({ }) {
-  
+  const history = useHistory();
   const [placeCats, setPlaceCats] = useState(null);
   const { register, handleSubmit, formState: { errors }, control, setValue } = useForm();
   
@@ -95,7 +96,10 @@ export function PlaceAddPage({ }) {
     let PostalCodeF = document.getElementById('postalCodeF').value;
     data.postalCode = `${PostalCodeH}-${PostalCodeF}`;
     //console.log(data);
-    postPlace(data, 'add');
+    postPlace(data, 'add').then(()=>{
+      history.push({ pathname: '/', state: { rootIndex: 2 }});
+      //遷移先にrootIndexを渡す　→　会場一覧に飛ぶ
+    });
   }
 
   

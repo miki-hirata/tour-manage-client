@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { useLocation, useParams, Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import SwipeableViews from 'react-swipeable-views';
-import { TabArea, StyledTabs, StyledTab,StyledCard, CardInner} from "../components";
+import { TabArea, StyledTabs, StyledTab } from "../components";
 import { AboutPage } from "./About.js";
 
-import { EventListPage, EventDetailPage, EventAddPage } from "./event";
-import { PlaceListPage, PlaceDetailPage, PlaceAddPage } from "./place";
-import { TourListPage, TourDetailPage, TourEventDetailPage } from "./tour";
+import { EventListPage } from "./event";
+import { PlaceListPage } from "./place";
+import { TourListPage } from "./tour";
 
 export function RootPage({ setHdTitle }) {
   
@@ -16,8 +16,13 @@ export function RootPage({ setHdTitle }) {
     window.scrollTo(0, 0);//遷移時に画面上部へ
   }
   
+  const location = useLocation();
+
   useEffect(() => {
     setHdTitle('トップページ')
+    if(location.state){
+      setIndex(location.state.rootIndex);
+    }
   }, []);
   
   return (
